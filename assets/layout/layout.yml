@@ -1,0 +1,5 @@
+settings:
+  token_env: TELEGRAM_TOKEN
+  parse_mode: html
+  long_poller: {}
+  locales_dir: assets/layout/locales

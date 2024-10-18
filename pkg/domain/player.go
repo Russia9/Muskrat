@@ -4,19 +4,29 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"regexp"
 	"time"
+
+	"github.com/Russia9/Muskrat/pkg/permissions"
 )
 
 // Entity
 type Player struct {
-	ID       int64  `json:"id"`
-	Username string `json:"username"`
+	ID         int64                  `json:"id"`
+	Username   string                 `json:"username"`
+	PlayerRole permissions.PlayerRole `json:"player_role"`
 
-	SquadID   int64      `json:"squad_id"`
-	GuildID   int64      `json:"guild_id"`
-	SquadRole PlayerRole `json:"squad_role"`
+	Language string `json:"language"`
+
+	SquadID   string                `json:"squad_id"`
+	GuildID   string                `json:"guild_id"`
+	SquadRole permissions.SquadRole `json:"squad_role"`
+
+	FirstSeen time.Time `json:"first_seen"`
+	LastSeen  time.Time `json:"last_seen"`
 
 	// Basic info
+	Castle       string `json:"castle"`
 	PlayerName   string `json:"player_name"`
 	Level        int    `json:"level"`
 	CurrentExp   int    `json:"current_exp"`
@@ -58,20 +68,24 @@ func (p Player) Mention() string {
 }
 
 // Constants
-type PlayerRole int
-
-const (
-	PlayerRoleStranger PlayerRole = iota
-	PlayerRoleMember
-	PlayerRoleSquire
-	PlayerRoleLeader
-)
+var UsernameRegex = regexp.MustCompile("^\\w{4,32}$")
 
 // Errors
 var ErrPlayerNotFound = errors.New("player not found")
+var ErrInvalidUsername = errors.New("invalid username")
 
 // Interfaces
 type PlayerUsecase interface {
+	Create(ctx context.Context, scope permissions.Scope, id int64, username string) (*Player, error)
+
+	Get(ctx context.Context, scope permissions.Scope, id int64) (*Player, error)
+	GetByUsername(ctx context.Context, scope permissions.Scope, username string) (*Player, error)
+
+	ParseMe(ctx context.Context, scope permissions.Scope, me string) (*Player, error)
+	ParseHero(ctx context.Context, scope permissions.Scope, hero string) (*Player, error)
+	ParseSchool(ctx context.Context, scope permissions.Scope, school string) (*Player, error)
+
+	Seen(ctx context.Context, scope permissions.Scope, username string) (*Player, error)
 }
 
 type PlayerRepository interface {

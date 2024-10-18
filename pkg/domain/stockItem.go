@@ -8,7 +8,7 @@ import (
 // Entity
 type StockItem struct {
 	PlayerID  int64  `json:"player_id"`
-	Warehouse string `json:"warehouse"` // g_3_3
+	Warehouse string `json:"warehouse"` // g_3_3 or nothing
 
 	ItemID    int `json:"item_id"`
 	Sharpness int `json:"sharpness"` // If w34_1 then 1 goes here
