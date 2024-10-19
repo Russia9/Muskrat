@@ -26,7 +26,7 @@ type Player struct {
 	LastSeen  time.Time `json:"last_seen"`
 
 	// Basic info
-	Castle       string `json:"castle"`
+	Castle       Castle `json:"castle"`
 	PlayerName   string `json:"player_name"`
 	Level        int    `json:"level"`
 	CurrentExp   int    `json:"current_exp"`
@@ -73,6 +73,7 @@ var UsernameRegex = regexp.MustCompile("^\\w{4,32}$")
 // Errors
 var ErrPlayerNotFound = errors.New("player not found")
 var ErrInvalidUsername = errors.New("invalid username")
+var ErrInvalidText = errors.New("invalid text")
 
 // Interfaces
 type PlayerUsecase interface {
