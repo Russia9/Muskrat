@@ -10,13 +10,11 @@ import (
 	"github.com/pkg/errors"
 )
 
-var playerNameRegex = regexp.MustCompile("([🇮🇲🇻🇦🇪🇺🇲🇴]+)([a-zA-Z0-9 _]{4,16}) explorer") // PlayerName & Castle
-var levelRegex = regexp.MustCompile("🏅Level: (\\d+)")
-var expRegex = regexp.MustCompile("📖Exp: (\\d+)/(\\d+)")
-var rankRegex = regexp.MustCompile("⚔️Rank: (\\d+)")
+var mePlayerNameRegex = regexp.MustCompile("([🇮🇲🇻🇦🇪🇺🇲🇴]+)([a-zA-Z0-9 _]{4,16}) explorer") // PlayerName & Castle
 
 var balanceRegex = regexp.MustCompile("🪙(\\d+) 💰(\\d+)")
 
+// ParseMe parses the Me message and updates the player's info
 func (u *uc) ParseMe(ctx context.Context, scope permissions.Scope, me string) (*domain.Player, error) {
 	// Permission check
 	if scope.PlayerRole < permissions.PlayerRoleUser {
@@ -24,7 +22,7 @@ func (u *uc) ParseMe(ctx context.Context, scope permissions.Scope, me string) (*
 	}
 
 	// Validate text
-	if !playerNameRegex.MatchString(me) {
+	if !mePlayerNameRegex.MatchString(me) {
 		return nil, domain.ErrInvalidText
 	}
 
@@ -35,43 +33,18 @@ func (u *uc) ParseMe(ctx context.Context, scope permissions.Scope, me string) (*
 	}
 
 	// Parse Castle, PlayerName
-	playerName := playerNameRegex.FindStringSubmatch(me)
+	playerName := mePlayerNameRegex.FindStringSubmatch(me)
 	if len(playerName) != 3 {
 		return nil, domain.ErrInvalidText
 	}
 	player.Castle = domain.FlagToCastle(playerName[1])
 	player.PlayerName = playerName[2]
 
-	// Parse Level
-	level := levelRegex.FindStringSubmatch(me)
-	if len(level) != 2 {
-		return nil, domain.ErrInvalidText
-	}
-	player.Level, err = strconv.Atoi(level[1])
+	// Parse Basic info
+	err = parseBase(player, me)
 	if err != nil {
-		return nil, domain.ErrInvalidText
+		return nil, err
 	}
-
-	// Parse Exp
-	exp := expRegex.FindStringSubmatch(me)
-	if len(exp) != 3 {
-		return nil, domain.ErrInvalidText
-	}
-	player.CurrentExp, err = strconv.Atoi(exp[1])
-	if err != nil {
-		return nil, domain.ErrInvalidText
-	}
-	player.NextLevelExp, err = strconv.Atoi(exp[2])
-	if err != nil {
-		return nil, domain.ErrInvalidText
-	}
-
-	// Parse Rank
-	rank := rankRegex.FindStringSubmatch(me)
-	if len(exp) != 2 {
-		return nil, domain.ErrInvalidText
-	}
-	player.Rank, err = strconv.Atoi(rank[2])
 
 	// Parse Balance
 	balance := balanceRegex.FindStringSubmatch(me)

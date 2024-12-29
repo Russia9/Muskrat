@@ -39,14 +39,7 @@ type Player struct {
 	Dex int `json:"dex"`
 	Vit int `json:"vit"`
 
-	AttackForce   int `json:"attack_force"`
-	AttackSpeed   int `json:"attack_speed"`
-	CriticalRate  int `json:"critical_rate"`
-	CriticalForce int `json:"critical_force"`
-	Accuracy      int `json:"accuracy"`
-	Evasion       int `json:"evasion"`
-	ArmorScore    int `json:"armor_score"`
-	MoveSpeed     int `json:"move_speed"`
+	DetailedStats map[string]int `json:"detailed_stats"`
 
 	ProfileUpdatedAt time.Time `json:"profile_updated_at"`
 
