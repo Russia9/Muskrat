@@ -52,7 +52,7 @@ func (u *uc) ParseHero(ctx context.Context, scope permissions.Scope, hero string
 	player.PlayerName = playerName[2]
 
 	// Parse Basic info
-	err = parseBase(player, hero)
+	err = ParseBase(player, hero)
 	if err != nil {
 		return nil, err
 	}

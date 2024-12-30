@@ -11,12 +11,12 @@ var levelRegex = regexp.MustCompile("🏅Level: (\\d+)")
 var expRegex = regexp.MustCompile("📖Exp: (\\d+)/(\\d+)")
 var rankRegex = regexp.MustCompile("⚔️Rank: (\\d+)")
 
-// parseBase parses the basic info of a player:
+// ParseBase parses the basic info of a player:
 // - Level
 // - Exp
 // - Rank
 // Format of these fields is consistent between /hero and me
-func parseBase(player *domain.Player, msg string) error {
+func ParseBase(player *domain.Player, msg string) error {
 	var err error
 
 	// Parse Level
@@ -45,10 +45,10 @@ func parseBase(player *domain.Player, msg string) error {
 
 	// Parse Rank
 	rank := rankRegex.FindStringSubmatch(msg)
-	if len(exp) != 2 {
+	if len(rank) != 2 {
 		return domain.ErrInvalidText
 	}
-	player.Rank, err = strconv.Atoi(rank[2])
+	player.Rank, err = strconv.Atoi(rank[1])
 
 	return nil
 }
