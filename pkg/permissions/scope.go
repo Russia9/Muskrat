@@ -8,8 +8,8 @@ type Scope struct {
 	ID         int64
 	PlayerRole PlayerRole
 
-	SquadID   string
-	GuildID   string
+	SquadID   *string
+	GuildID   *string
 	SquadRole SquadRole
 }
 
@@ -21,13 +21,17 @@ const (
 	PlayerRoleUser
 )
 
-type SquadRole int
+type SquadRole string
 
 const (
-	SquadRoleStranger SquadRole = iota
-	SquadRoleMember
-	SquadRoleSquire
-	SquadRoleLeader
+	SquadRoleStranger SquadRole = "stranger"
+	SquadRoleMember   SquadRole = "member"
+
+	SquadRoleBartender SquadRole = "bartender"
+	SquadRoleSquire    SquadRole = "squire"
+	SquadRoleCommander SquadRole = "commander"
+
+	SquadRoleLeader SquadRole = "leader"
 )
 
 var ErrForbidden = errors.New("forbidden")

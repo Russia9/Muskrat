@@ -1,10 +1,12 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"strconv"
 
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"gopkg.in/telebot.v3"
@@ -38,6 +40,18 @@ func main() {
 		zerolog.SetGlobalLevel(zerolog.TraceLevel)
 	default:
 		zerolog.SetGlobalLevel(zerolog.InfoLevel)
+	}
+
+	// DB connection
+	log.Debug().Msg("DB Connection")
+	db, err := pgxpool.New(context.Background(), os.Getenv("POSTGRES_URL"))
+	if err != nil {
+		log.Fatal().Err(err).Msg("DB Connect")
+	}
+	defer db.Close()
+	err = db.Ping(context.Background())
+	if err != nil {
+		log.Fatal().Err(err).Msg("DB Ping")
 	}
 
 	// Bot

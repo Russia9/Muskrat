@@ -1,0 +1,25 @@
+services:
+  postgres:
+    image: postgres:13.3
+    restart: always
+    env_file: ".postgres.env"
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - "postgres_data:/var/lib/postgresql/data"
+
+  # migrate:
+  #   image: migrate/migrate
+  #   restart: "no"
+  #   env_file: ".postgres.env"
+  #   command: "-path=/migrations/ -database=$DATABASE_URL up"
+  #   volumes:
+  #     - "./sql/migrations:/migrations"
+
+  muskrat:
+    build: .
+    restart: always
+    env_file: ".muskrat.env"
+
+volumes:
+  postgres_data:

@@ -11,7 +11,7 @@ type Squad struct {
 	ChatID string `json:"chat_id"`
 
 	Name   string `json:"name"`
-	Castle string `json:"castle"`
+	Castle Castle `json:"castle"`
 
 	CreatedAt int64 `json:"created_at"`
 	UpdatedAt int64 `json:"updated_at"`

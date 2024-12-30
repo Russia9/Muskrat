@@ -18,19 +18,20 @@ type Player struct {
 
 	Language string `json:"language"`
 
-	SquadID   string                `json:"squad_id"`
-	GuildID   string                `json:"guild_id"`
+	SquadID   *string               `json:"squad_id"`
+	GuildID   *string               `json:"guild_id"`
 	SquadRole permissions.SquadRole `json:"squad_role"`
 
 	FirstSeen time.Time `json:"first_seen"`
 	LastSeen  time.Time `json:"last_seen"`
 
 	// Basic info
-	Castle       Castle `json:"castle"`
-	PlayerName   string `json:"player_name"`
-	Level        int    `json:"level"`
-	CurrentExp   int    `json:"current_exp"`
-	NextLevelExp int    `json:"next_level_exp"`
+	Castle     Castle `json:"castle"`
+	PlayerName string `json:"player_name"`
+
+	Level        int `json:"level"`
+	CurrentExp   int `json:"current_exp"`
+	NextLevelExp int `json:"next_level_exp"`
 
 	Rank int `json:"rank"`
 
