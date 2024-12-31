@@ -12,7 +12,8 @@ import (
 )
 
 const createPlayer = `-- name: CreatePlayer :exec
-INSERT INTO players (id, username, player_role, language, first_seen, last_seen)
+INSERT
+INTO players (id, username, player_role, language, first_seen, last_seen)
 VALUES ($1, $2, $3, $4, $5, $6)
 `
 
@@ -34,6 +35,17 @@ func (q *Queries) CreatePlayer(ctx context.Context, arg CreatePlayerParams) erro
 		arg.FirstSeen,
 		arg.LastSeen,
 	)
+	return err
+}
+
+const deletePlayer = `-- name: DeletePlayer :exec
+DELETE
+FROM players
+WHERE id = $1
+`
+
+func (q *Queries) DeletePlayer(ctx context.Context, id int64) error {
+	_, err := q.db.Exec(ctx, deletePlayer, id)
 	return err
 }
 
@@ -115,4 +127,92 @@ func (q *Queries) GetPlayerByUsername(ctx context.Context, username string) (Pla
 		&i.BalanceUpdatedAt,
 	)
 	return i, err
+}
+
+const updatePlayer = `-- name: UpdatePlayer :exec
+UPDATE players
+SET username           = $2,
+    player_role        = $3,
+    language           = $4,
+    squad_id           = $5,
+    guild_id           = $6,
+    squad_role         = $7,
+    first_seen         = $8,
+    last_seen          = $9,
+    castle             = $10,
+    player_name        = $11,
+    level              = $12,
+    current_exp        = $13,
+    next_level_exp     = $14,
+    rank               = $15,
+    str                = $16,
+    dex                = $17,
+    vit                = $18,
+    detailed_stats     = $19,
+    profile_updated_at = $20,
+    schools            = $21,
+    schools_updated_at = $22,
+    player_balance     = $23,
+    bank_balance       = $24,
+    balance_updated_at = $25
+WHERE id = $1
+`
+
+type UpdatePlayerParams struct {
+	ID               int64
+	Username         string
+	PlayerRole       int32
+	Language         string
+	SquadID          pgtype.UUID
+	GuildID          pgtype.UUID
+	SquadRole        SquadRole
+	FirstSeen        pgtype.Timestamptz
+	LastSeen         pgtype.Timestamptz
+	Castle           Castle
+	PlayerName       string
+	Level            int32
+	CurrentExp       int32
+	NextLevelExp     int32
+	Rank             int32
+	Str              int32
+	Dex              int32
+	Vit              int32
+	DetailedStats    []byte
+	ProfileUpdatedAt pgtype.Timestamptz
+	Schools          []byte
+	SchoolsUpdatedAt pgtype.Timestamptz
+	PlayerBalance    int32
+	BankBalance      int32
+	BalanceUpdatedAt pgtype.Timestamptz
+}
+
+func (q *Queries) UpdatePlayer(ctx context.Context, arg UpdatePlayerParams) error {
+	_, err := q.db.Exec(ctx, updatePlayer,
+		arg.ID,
+		arg.Username,
+		arg.PlayerRole,
+		arg.Language,
+		arg.SquadID,
+		arg.GuildID,
+		arg.SquadRole,
+		arg.FirstSeen,
+		arg.LastSeen,
+		arg.Castle,
+		arg.PlayerName,
+		arg.Level,
+		arg.CurrentExp,
+		arg.NextLevelExp,
+		arg.Rank,
+		arg.Str,
+		arg.Dex,
+		arg.Vit,
+		arg.DetailedStats,
+		arg.ProfileUpdatedAt,
+		arg.Schools,
+		arg.SchoolsUpdatedAt,
+		arg.PlayerBalance,
+		arg.BankBalance,
+		arg.BalanceUpdatedAt,
+	)
+	return err
 }
