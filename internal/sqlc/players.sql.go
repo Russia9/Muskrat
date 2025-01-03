@@ -177,9 +177,9 @@ type UpdatePlayerParams struct {
 	Str              int32
 	Dex              int32
 	Vit              int32
-	DetailedStats    []byte
+	DetailedStats    map[string]int
 	ProfileUpdatedAt pgtype.Timestamptz
-	Schools          []byte
+	Schools          map[string]int
 	SchoolsUpdatedAt pgtype.Timestamptz
 	PlayerBalance    int32
 	BankBalance      int32

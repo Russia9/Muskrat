@@ -10,7 +10,10 @@ import (
 
 func (u *uc) Get(ctx context.Context, scope permissions.Scope, id int64) (*domain.Player, error) {
 	// Permission check
-	if scope.PlayerRole < permissions.PlayerRoleUser {
+	if scope.PlayerRole < permissions.PlayerRoleUnregistered {
+		return nil, permissions.ErrForbidden
+	}
+	if scope.ID != id { // TODO: Add permission for viewing squad members for squad leaders
 		return nil, permissions.ErrForbidden
 	}
 

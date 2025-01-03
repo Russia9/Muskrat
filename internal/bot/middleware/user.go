@@ -27,6 +27,17 @@ func (m *Middleware) Player(next telebot.HandlerFunc) telebot.HandlerFunc {
 			if err != nil {
 				return errors.Wrap(err, "user usecase")
 			}
+		} else {
+			return errors.Wrap(err, "user usecase")
+		}
+
+		// Update scope
+		scope = permissions.Scope{
+			ID:         player.ID,
+			PlayerRole: player.PlayerRole,
+			SquadID:    player.SquadID,
+			GuildID:    player.GuildID,
+			SquadRole:  player.SquadRole,
 		}
 
 		// Check if player is banned

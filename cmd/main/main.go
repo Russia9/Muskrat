@@ -2,10 +2,13 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"strconv"
 
+	playerRepo "github.com/Russia9/Muskrat/internal/player/repository/postgres"
+	playerUsecase "github.com/Russia9/Muskrat/internal/player/usecase"
+
+	"github.com/Russia9/Muskrat/internal/bot"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -44,7 +47,7 @@ func main() {
 
 	// DB connection
 	log.Debug().Msg("DB Connection")
-	db, err := pgxpool.New(context.Background(), os.Getenv("POSTGRES_URL"))
+	db, err := pgxpool.New(context.Background(), os.Getenv("POSTGRES_URI"))
 	if err != nil {
 		log.Fatal().Err(err).Msg("DB Connect")
 	}
@@ -54,18 +57,28 @@ func main() {
 		log.Fatal().Err(err).Msg("DB Ping")
 	}
 
+	// Repository creation
+	log.Debug().Msg("Repository creation")
+	playerRepo := playerRepo.NewPlayerRepository(db)
+
+	// Usecase creation
+	log.Debug().Msg("Usecase creation")
+	playerUC := playerUsecase.NewPlayerUsecase(playerRepo)
+
 	// Bot
-	log.Debug().Msg("Creating bot")
-	log.Trace().Msg("Loading layout")
-	parsedLayout, err := layout.New("assets/layout/layout.yml")
+	log.Trace().Msg("Layout loading")
+	l, err := layout.New("assets/layout/layout.yml")
 	if err != nil {
 		log.Fatal().Err(err).Msg("Failed to load layout")
 	}
-	log.Trace().Msg("Creating bot")
-	bot, err := telebot.NewBot(parsedLayout.Settings())
+	log.Trace().Msg("Bot creation")
+	tb, err := telebot.NewBot(l.Settings())
 	if err != nil {
 		log.Fatal().Err(err).Msg("Failed to create bot")
 	}
+	b := bot.NewBot(tb, l, playerUC)
 
-	fmt.Println(bot.Me.ID)
+	// Start bot
+	log.Info().Msg("Starting bot")
+	b.StartBlocking()
 }
