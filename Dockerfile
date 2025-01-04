@@ -13,7 +13,7 @@ RUN go mod download
 COPY . .
 
 # Build app
-RUN go build -o app .
+RUN go build -o app github.com/Russia9/Muskrat/cmd/main
 
 # Run app
 CMD ["./app"]
