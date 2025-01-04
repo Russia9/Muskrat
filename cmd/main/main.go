@@ -5,13 +5,15 @@ import (
 	"os"
 	"strconv"
 
-	playerRepo "github.com/Russia9/Muskrat/internal/player/repository/postgres"
+	playerRepo "github.com/Russia9/Muskrat/internal/player/repository/mongo"
 	playerUsecase "github.com/Russia9/Muskrat/internal/player/usecase"
 
 	"github.com/Russia9/Muskrat/internal/bot"
-	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/Russia9/Muskrat/pkg/utils"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"gopkg.in/telebot.v3"
 	"gopkg.in/telebot.v3/layout"
 )
@@ -45,21 +47,24 @@ func main() {
 		zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	}
 
-	// DB connection
+	// DB Connection
 	log.Debug().Msg("DB Connection")
-	db, err := pgxpool.New(context.Background(), os.Getenv("POSTGRES_URI"))
+	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(os.Getenv("MONGO_URL")))
 	if err != nil {
-		log.Fatal().Err(err).Msg("DB Connect")
+		log.Fatal().Err(err).Msg("DB Connection")
 	}
-	defer db.Close()
-	err = db.Ping(context.Background())
+	db := client.Database(utils.GetEnv("MONGO_DB", "muskrat"))
+
+	// DB Ping
+	log.Debug().Msg("DB Ping")
+	err = client.Ping(context.Background(), nil)
 	if err != nil {
 		log.Fatal().Err(err).Msg("DB Ping")
 	}
 
 	// Repository creation
 	log.Debug().Msg("Repository creation")
-	playerRepo := playerRepo.NewPlayerRepository(db)
+	playerRepo := playerRepo.NewPlayerRepo(db)
 
 	// Usecase creation
 	log.Debug().Msg("Usecase creation")

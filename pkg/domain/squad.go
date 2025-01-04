@@ -7,14 +7,14 @@ import (
 
 // Entity
 type Squad struct {
-	ID     string `json:"id"`
-	ChatID string `json:"chat_id"`
+	ID     string `bson:"_id"`
+	ChatID string
 
-	Name   string `json:"name"`
-	Castle Castle `json:"castle"`
+	Name   string
+	Castle Castle
 
-	CreatedAt int64 `json:"created_at"`
-	UpdatedAt int64 `json:"updated_at"`
+	CreatedAt int64
+	UpdatedAt int64
 }
 
 // Errors

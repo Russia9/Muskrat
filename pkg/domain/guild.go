@@ -7,17 +7,17 @@ import (
 
 // Entity
 type Guild struct {
-	ID      string `json:"id"`
-	SquadID string `json:"squad_id"`
+	ID      string `bson:"_id"`
+	SquadID string
 
-	Name     string `json:"name"`
-	Tag      string `json:"tag"`
-	LeaderID int64  `json:"leader_id"`
+	Name     string
+	Tag      string
+	LeaderID int64
 
-	Level int `json:"level"`
+	Level int
 
-	CreatedAt int64 `json:"created_at"`
-	UpdatedAt int64 `json:"updated_at"`
+	CreatedAt int64
+	UpdatedAt int64
 }
 
 // Errors

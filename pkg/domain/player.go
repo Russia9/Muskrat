@@ -12,46 +12,46 @@ import (
 
 // Entity
 type Player struct {
-	ID         int64                  `json:"id"`
-	Username   string                 `json:"username"`
-	PlayerRole permissions.PlayerRole `json:"player_role"`
+	ID         int64 `bson:"_id"`
+	Username   string
+	PlayerRole permissions.PlayerRole
 
-	Language string `json:"language"`
+	Language string
 
-	SquadID   *string               `json:"squad_id"`
-	GuildID   *string               `json:"guild_id"`
-	SquadRole permissions.SquadRole `json:"squad_role"`
+	SquadID   *string
+	GuildID   *string
+	SquadRole permissions.SquadRole
 
-	FirstSeen time.Time `json:"first_seen"`
-	LastSeen  time.Time `json:"last_seen"`
+	FirstSeen time.Time
+	LastSeen  time.Time
 
 	// Basic info
-	Castle     Castle `json:"castle"`
-	PlayerName string `json:"player_name"`
+	Castle     Castle
+	PlayerName string
 
-	Level        int `json:"level"`
-	CurrentExp   int `json:"current_exp"`
-	NextLevelExp int `json:"next_level_exp"`
+	Level        int
+	CurrentExp   int
+	NextLevelExp int
 
-	Rank int `json:"rank"`
+	Rank int
 
 	// Stats
-	Str int `json:"str"`
-	Dex int `json:"dex"`
-	Vit int `json:"vit"`
+	Str int
+	Dex int
+	Vit int
 
-	DetailedStats map[string]int `json:"detailed_stats"`
+	DetailedStats map[string]int
 
-	ProfileUpdatedAt time.Time `json:"profile_updated_at"`
+	ProfileUpdatedAt time.Time
 
 	// School
-	Schools          map[string]int `json:"schools"` // SchoolID -> Level
-	SchoolsUpdatedAt time.Time      `json:"schools_updated_at"`
+	Schools          map[string]int // SchoolID -> Level
+	SchoolsUpdatedAt time.Time
 
 	// Balance
-	PlayerBalance    int       `json:"player_balance"`
-	BankBalance      int       `json:"bank_balance"`
-	BalanceUpdatedAt time.Time `json:"balance_updated_at"`
+	PlayerBalance    int
+	BankBalance      int
+	BalanceUpdatedAt time.Time
 }
 
 func (p Player) Mention() string {
