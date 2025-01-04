@@ -7,6 +7,8 @@ import (
 
 	playerRepo "github.com/Russia9/Muskrat/internal/player/repository/mongo"
 	playerUsecase "github.com/Russia9/Muskrat/internal/player/usecase"
+	squadRepo "github.com/Russia9/Muskrat/internal/squad/repository/mongo"
+	squadUsecae "github.com/Russia9/Muskrat/internal/squad/usecase"
 
 	"github.com/Russia9/Muskrat/internal/bot"
 	"github.com/Russia9/Muskrat/pkg/utils"
@@ -65,10 +67,12 @@ func main() {
 	// Repository creation
 	log.Debug().Msg("Repository creation")
 	playerRepo := playerRepo.NewPlayerRepo(db)
+	squadRepo := squadRepo.NewSquadRepo(db)
 
 	// Usecase creation
 	log.Debug().Msg("Usecase creation")
 	playerUC := playerUsecase.NewPlayerUsecase(playerRepo)
+	squadUC := squadUsecae.NewSquadUsecase(squadRepo, playerRepo)
 
 	// Bot
 	log.Trace().Msg("Layout loading")
@@ -81,7 +85,7 @@ func main() {
 	if err != nil {
 		log.Fatal().Err(err).Msg("Failed to create bot")
 	}
-	b := bot.NewBot(tb, l, playerUC)
+	b := bot.NewBot(tb, l, playerUC, squadUC)
 
 	// Start bot
 	log.Info().Msg("Starting bot")

@@ -3,6 +3,7 @@ package bot
 import (
 	"github.com/Russia9/Muskrat/internal/bot/middleware"
 	"github.com/Russia9/Muskrat/internal/bot/parse"
+	"github.com/Russia9/Muskrat/internal/bot/squad"
 	"github.com/Russia9/Muskrat/pkg/domain"
 	"gopkg.in/telebot.v3"
 	"gopkg.in/telebot.v3/layout"
@@ -13,9 +14,10 @@ type Bot struct {
 	layout *layout.Layout
 
 	parse *parse.Module
+	squad *squad.Module
 }
 
-func NewBot(tb *telebot.Bot, l *layout.Layout, pl domain.PlayerUsecase) *Bot {
+func NewBot(tb *telebot.Bot, l *layout.Layout, pl domain.PlayerUsecase, sq domain.SquadUsecase) *Bot {
 	b := &Bot{
 		bot:    tb,
 		layout: l,
@@ -28,6 +30,7 @@ func NewBot(tb *telebot.Bot, l *layout.Layout, pl domain.PlayerUsecase) *Bot {
 
 	// Create Modules
 	b.parse = parse.NewModule(tb, l, pl)
+	b.squad = squad.NewModule(tb, l, pl, sq)
 
 	// Register handlers
 	b.bot.Handle(telebot.OnText, b.Router)

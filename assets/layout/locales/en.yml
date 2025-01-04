@@ -1,6 +1,43 @@
 # Common
 back: "◀ Back"
 wrong_format: "❌ Wrong format"
+need_profile_update: "🔄 Please, update your profile"
 
 # Parse
-parse_too_old: "<b>⚠️ Message is too old</b> \n\nPlease, forward the message faster than 40 seconds."
+parse_too_old: |
+  <b>⚠️ Message is too old</b>
+
+  Please, forward the message faster than 40 seconds.
+
+# Squad
+squad_create_wrong_format: |
+  <b>⚠️ Wrong format</b>
+
+  Please, use the following format:
+  <code>/squad_create [name]</code>
+squad_create_not_in_chat: |
+  <b>⚠️ Not in chat</b>
+
+  Please, use this command in the squad chat (supergroup).
+squad_create_already_in_squad: |
+  <b>⚠️ Already a squad member</b>
+
+  You are already a member of a squad.
+squad_create_not_chat_admin: |
+  <b>⚠️ Not a chat admin</b>
+
+  You must be an admin of the chat to use this command.
+squad_create_chat_already_attached: |
+  <b>⚠️ Chat is already attached</b>
+
+  This chat is already attached to a squad.
+squad_create_success: |
+  <b>🎉 Squad created</b>
+
+  Squad {{ .Name }} has been created.
+  Chat with ID {{ .ChatID }} has been attached.
+
+squad_deleted: |
+  <b>🗑 Squad deleted</b>
+
+  Squad {{ .Name }} has been deleted.

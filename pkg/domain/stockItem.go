@@ -15,15 +15,19 @@ const (
 
 // Entity
 type StockItem struct {
-	StockID   string    `json:"stock_id"` // PlayerID or GuildID (Depending on StockType)
-	StockType StockType `json:"stock_type"`
-	Location  string    `json:"warehouse"` // g_3_3 or nothing
+	ID string `bson:"_id"`
 
-	ItemID    int `json:"item_id"`
-	Sharpness int `json:"sharpness"` // If w34_1 then 1 goes here
-	Quantity  int `json:"quantity"`
+	StockID   string // PlayerID or GuildID (Depending on StockType)
+	StockType StockType
+	Location  string // g_3_3 or nothing
 
-	UpdatedAt int64 `json:"updated_at"`
+	ItemType ItemType
+
+	ItemID    int
+	Sharpness int // If w34_1 then 1 goes here
+	Quantity  int
+
+	UpdatedAt int64
 }
 
 // Errors

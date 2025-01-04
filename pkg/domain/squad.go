@@ -28,6 +28,9 @@ var ErrAlreadyInSquad = errors.New("already in squad")
 type SquadUsecase interface {
 	Create(ctx context.Context, scope permissions.Scope, chatID int64, name string) (*Squad, error)
 
+	Get(ctx context.Context, scope permissions.Scope, id string) (*Squad, error)
+	GetByChatID(ctx context.Context, scope permissions.Scope, chatID int64) (*Squad, error)
+
 	ChangeChatID(ctx context.Context, scope permissions.Scope, chatID int64) (*Squad, error)
 	ChangeName(ctx context.Context, scope permissions.Scope, name string) (*Squad, error)
 

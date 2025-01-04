@@ -41,7 +41,7 @@ func (r *repo) Get(ctx context.Context, id string) (*domain.Squad, error) {
 	// Find object
 	res := r.c.FindOne(ctx, bson.M{"_id": id})
 	if errors.Is(res.Err(), mongo.ErrNoDocuments) {
-		return nil, domain.ErrPlayerNotFound
+		return nil, domain.ErrSquadNotFound
 	} else if res.Err() != nil {
 		return nil, errors.Wrap(res.Err(), "mongo")
 	}
@@ -60,7 +60,7 @@ func (r *repo) GetByChatID(ctx context.Context, chatID int64) (*domain.Squad, er
 	// Find object
 	res := r.c.FindOne(ctx, bson.M{"chatid": chatID})
 	if errors.Is(res.Err(), mongo.ErrNoDocuments) {
-		return nil, domain.ErrPlayerNotFound
+		return nil, domain.ErrSquadNotFound
 	} else if res.Err() != nil {
 		return nil, errors.Wrap(res.Err(), "mongo")
 	}
@@ -76,5 +76,11 @@ func (r *repo) GetByChatID(ctx context.Context, chatID int64) (*domain.Squad, er
 }
 
 func (r *repo) Update(ctx context.Context, squad *domain.Squad) error {
-	panic("unimplemented")
+	// Run ReplaceOne query
+	_, err := r.c.ReplaceOne(ctx, bson.M{"_id": squad.ID}, squad)
+	if err != nil {
+		return errors.Wrap(err, "mongo")
+	}
+
+	return nil
 }

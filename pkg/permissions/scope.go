@@ -19,6 +19,7 @@ const (
 	PlayerRoleBanned PlayerRole = iota - 1
 	PlayerRoleUnregistered
 	PlayerRoleUser
+	PlayerRoleRoot
 )
 
 type SquadRole string
@@ -35,3 +36,5 @@ const (
 )
 
 var ErrForbidden = errors.New("forbidden")
+
+var InternalScope = Scope{PlayerRole: PlayerRoleRoot}
