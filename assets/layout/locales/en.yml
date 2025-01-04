@@ -1,3 +1,6 @@
 # Common
 back: "◀ Back"
 wrong_format: "❌ Wrong format"
+
+# Parse
+parse_too_old: "<b>⚠️ Message is too old</b> \n\nPlease, forward the message faster than 40 seconds."

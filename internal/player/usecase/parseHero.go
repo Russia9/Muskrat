@@ -76,6 +76,7 @@ func (u *uc) ParseHero(ctx context.Context, scope permissions.Scope, hero string
 	}
 
 	// Parse Detailed Stats
+	player.DetailedStats = make(map[string]int, len(detailedStatsRegex))
 	for key, regex := range detailedStatsRegex {
 		stat := regex.FindStringSubmatch(hero)
 		if len(stat) != 2 {

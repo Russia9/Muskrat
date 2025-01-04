@@ -34,7 +34,7 @@ func (u *uc) ParseSchool(ctx context.Context, scope permissions.Scope, school st
 	schools := schoolRegex.FindAllStringSubmatch(school, -1)
 	player.Schools = make(map[string]int, len(schools))
 	for _, school := range schools {
-		if len(school) != 2 {
+		if len(school) != 3 {
 			return nil, domain.ErrInvalidText
 		}
 		player.Schools[school[2]] = utils.KeycapToDigit(school[1])
