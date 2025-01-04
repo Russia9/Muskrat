@@ -61,13 +61,19 @@ func (p Player) Mention() string {
 	return fmt.Sprintf("<a href=\"%d\">%s</a>", p.ID, p.PlayerName)
 }
 
+func (p Player) Updated() bool {
+	return p.ProfileUpdatedAt.After(time.Now().Add(-ProfileUpdateInterval))
+}
+
 // Constants
 var UsernameRegex = regexp.MustCompile("^\\w{4,32}$")
+var ProfileUpdateInterval = 48 * time.Hour
 
 // Errors
 var ErrPlayerNotFound = errors.New("player not found")
 var ErrInvalidUsername = errors.New("invalid username")
 var ErrInvalidText = errors.New("invalid text")
+var ErrNeedProfileUpdate = errors.New("need profile update")
 
 // Interfaces
 type PlayerUsecase interface {
@@ -88,6 +94,12 @@ type PlayerRepository interface {
 
 	Get(ctx context.Context, id int64) (*Player, error)
 	GetByUsername(ctx context.Context, username string) (*Player, error)
+
+	ListBySquad(ctx context.Context, squadID string) ([]*Player, error)
+	ListByGuild(ctx context.Context, guildID string) ([]*Player, error)
+
+	CountBySquad(ctx context.Context, squadID string) (int64, error)
+	CountByGuild(ctx context.Context, guildID string) (int64, error)
 
 	Update(ctx context.Context, obj *Player) error
 

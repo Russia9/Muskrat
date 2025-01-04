@@ -21,6 +21,8 @@ func (u *uc) Create(ctx context.Context, scope permissions.Scope, id int64, user
 		Username:   username,
 		PlayerRole: permissions.PlayerRoleUser,
 
+		SquadRole: permissions.SquadRoleNone, // Default
+
 		Language: "ru", // Default
 
 		FirstSeen: time.Now(),

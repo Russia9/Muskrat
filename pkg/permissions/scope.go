@@ -24,8 +24,8 @@ const (
 type SquadRole string
 
 const (
-	SquadRoleStranger SquadRole = "stranger"
-	SquadRoleMember   SquadRole = "member"
+	SquadRoleNone   SquadRole = ""
+	SquadRoleMember SquadRole = "member"
 
 	SquadRoleBartender SquadRole = "bartender"
 	SquadRoleSquire    SquadRole = "squire"
