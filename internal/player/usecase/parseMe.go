@@ -4,6 +4,7 @@ import (
 	"context"
 	"regexp"
 	"strconv"
+	"time"
 
 	"github.com/Russia9/Muskrat/pkg/domain"
 	"github.com/Russia9/Muskrat/pkg/permissions"
@@ -59,6 +60,7 @@ func (u *uc) ParseMe(ctx context.Context, scope permissions.Scope, me string) (*
 	if err != nil {
 		return nil, domain.ErrInvalidText
 	}
+	player.BalanceUpdatedAt = time.Now()
 
 	// Update Player in repo
 	err = u.repo.Update(ctx, player)

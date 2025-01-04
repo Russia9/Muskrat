@@ -3,7 +3,6 @@ package parse
 import (
 	"context"
 	"errors"
-	"fmt"
 	"regexp"
 	"time"
 
@@ -42,12 +41,15 @@ func (m *Module) Router(c telebot.Context) error {
 
 	// Check message time
 	ogTime := time.Unix(int64(c.Message().OriginalUnixtime), 0)
-	if time.Now().Sub(ogTime) > TimeTreshold {
+	if time.Now().Sub(ogTime) > TimeTreshold { // If message is older than TimeTreshold
 		if c.Chat().Type == telebot.ChatPrivate {
-			return c.Send(m.l.Text(c, "parse_too_old"))
+			return c.Reply(m.l.Text(c, "parse_too_old"))
 		}
+
+		return nil
 	}
 
+	// Parse message if possible
 	var err error
 	switch {
 	case meRegex.MatchString(c.Text()):
@@ -55,20 +57,45 @@ func (m *Module) Router(c telebot.Context) error {
 		if err != nil {
 			return err
 		}
+
+		return m.react(c)
 	case heroRegex.MatchString(c.Text()):
 		_, err = m.player.ParseHero(context.Background(), scope, c.Text())
 		if err != nil {
 			return err
 		}
+
+		return m.react(c)
 	case schoolRegex.MatchString(c.Text()):
 		_, err = m.player.ParseSchool(context.Background(), scope, c.Text())
 		if err != nil {
 			return err
 		}
-	default:
-		fmt.Println("1")
-		return nil
+
+		return m.react(c)
 	}
+
+	return nil
+}
+
+const PreferredEmoji = "✍️"
+
+func (m *Module) react(c telebot.Context) error {
+	// Check if chat is PM
+	if c.Chat().Type == telebot.ChatPrivate {
+		// Delete message if PM
+		return c.Delete()
+	}
+
+	// Try to set the reaction for message
+	c.Bot().React(c.Chat(), c.Message(), telebot.ReactionOptions{
+		Reactions: []telebot.Reaction{
+			{
+				Type:  "emoji",
+				Emoji: PreferredEmoji,
+			},
+		},
+	})
 
 	return nil
 }
