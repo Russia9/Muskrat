@@ -3,6 +3,7 @@ package usecase
 import (
 	"regexp"
 	"strconv"
+	"time"
 
 	"github.com/Russia9/Muskrat/pkg/domain"
 )
@@ -49,6 +50,9 @@ func ParseBase(player *domain.Player, msg string) error {
 		return domain.ErrInvalidText
 	}
 	player.Rank, err = strconv.Atoi(rank[1])
+
+	// Update time
+	player.BasicsUpdatedAt = time.Now()
 
 	return nil
 }

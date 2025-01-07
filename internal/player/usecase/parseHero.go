@@ -88,7 +88,7 @@ func (u *uc) ParseHero(ctx context.Context, scope permissions.Scope, hero string
 		}
 	}
 
-	player.ProfileUpdatedAt = time.Now()
+	player.StatsUpdatedAt = time.Now()
 
 	// Update Player in repo
 	err = u.repo.Update(ctx, player)

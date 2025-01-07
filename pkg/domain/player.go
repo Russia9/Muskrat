@@ -33,16 +33,18 @@ type Player struct {
 	CurrentExp   int
 	NextLevelExp int
 
-	Rank int
+	BasicsUpdatedAt time.Time
 
 	// Stats
+	Rank int
+
 	Str int
 	Dex int
 	Vit int
 
 	DetailedStats map[string]int
 
-	ProfileUpdatedAt time.Time
+	StatsUpdatedAt time.Time
 
 	// School
 	Schools          map[string]int // SchoolID -> Level
@@ -58,11 +60,14 @@ func (p Player) Mention() string {
 	if p.Username != "" {
 		return "@" + p.Username
 	}
-	return fmt.Sprintf("<a href=\"%d\">%s</a>", p.ID, p.PlayerName)
+	if p.PlayerName != "" {
+		return fmt.Sprintf("<a href=\"%d\">%s</a>", p.ID, p.PlayerName)
+	}
+	return fmt.Sprintf("<a href=\"%d\">#%d</a>", p.ID, p.ID)
 }
 
 func (p Player) Updated() bool {
-	return p.ProfileUpdatedAt.After(time.Now().Add(-ProfileUpdateInterval))
+	return p.BasicsUpdatedAt.After(time.Now().Add(-ProfileUpdateInterval))
 }
 
 // Constants

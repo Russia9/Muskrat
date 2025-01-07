@@ -25,8 +25,8 @@ squad_help: |
   /squad_help - Show this message.
 
   <b>🤓 Player management:</b> <i>[Squad Leader only]</i>
-  /squad_add - Add a player to the squad. Use in reply to the player's message. Must be used in the squad chat.
-  /squad_remove [id/@username] - Remove a player from the squad. Use in reply to the player's message or specify the player.
+  /player_add - Add a player to the squad. Use in reply to the player's message. Must be used in the squad chat.
+  /player_remove [id/@username] - Remove a player from the squad. Use in reply to the player's message or specify the player.
 
   <b>🚫 Danger zone:</b>
   /squad_delete - Delete the squad. <i>[Squad Leader only]</i>
@@ -52,6 +52,10 @@ squad_not_in_squad: |
   <b>⚠️ Not in a squad</b>
 
   You are not a member of any squad.
+squad_wrong_squad: |
+  <b>⚠️ Wrong squad</b>
+
+  You are not a member of the squad <b>{{ .Name }}</b>.
 
 squad_create_wrong_format: |
   <b>⚠️ Wrong format</b>
@@ -78,6 +82,39 @@ squad_chat_success: |
   <b>✅ Chat attached</b>
 
   Chat with ID <code>{{ .ChatID }}</code> has been attached to the squad.
+
+squad_add_not_reply: |
+  <b>⚠️ Not a reply</b>
+
+  Please, use this command in reply to the player's message.
+squad_add_already_in_squad: |
+  <b>⚠️ Already in a squad</b>
+
+  Player is already a member of a squad.
+squad_add_success: |
+  <b>✅ Player added</b>
+
+  Player {{ .Mention }} has been added to the squad.
+
+squad_remove_wrong_format: |
+  <b>⚠️ Wrong format</b>
+
+  Please, use the following format:
+  /squad_remove [id/@username]
+
+  Or use this command in reply to the player's message.
+squad_remove_not_in_squad: |
+  <b>⚠️ Not in a squad</b>
+
+  Player is not a member of any squad.
+squad_remove_leader_can_not_leave: |
+  <b>⚠️ Leader can not leave</b>
+
+  Squad leader can not leave the squad. Please, use /squad_delete command to delete the squad.
+squad_remove_success: |
+  <b>👋 Player removed</b>
+
+  Player {{ .Mention }} has been removed from the squad.
 
 squad_delete_confirm: |
   <b>❗️ Are you sure?</b>

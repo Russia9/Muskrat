@@ -2,12 +2,17 @@ package usecase_test
 
 import (
 	"testing"
+	"time"
 
 	"github.com/Russia9/Muskrat/internal/player/usecase"
 	"github.com/Russia9/Muskrat/pkg/domain"
+	"github.com/agiledragon/gomonkey/v2"
 )
 
 func TestParseBase(t *testing.T) {
+	// Mock time
+	gomonkey.ApplyFuncReturn(time.Now, time.Date(2021, 1, 1, 0, 0, 0, 0, time.UTC))
+
 	tests := []struct {
 		name    string
 		msg     string
@@ -37,10 +42,11 @@ Position: G 3#2
 
 More info /hero`,
 			want: domain.Player{
-				Level:        30,
-				Rank:         1125,
-				CurrentExp:   47154,
-				NextLevelExp: 54934,
+				Level:           30,
+				Rank:            1125,
+				CurrentExp:      47154,
+				NextLevelExp:    54934,
+				BasicsUpdatedAt: time.Now(),
 			},
 			wantErr: nil,
 		},
@@ -74,10 +80,11 @@ Position: G 3#2
 
 🌟Noble 254 days /noble`,
 			want: domain.Player{
-				Level:        30,
-				Rank:         1125,
-				CurrentExp:   47154,
-				NextLevelExp: 54934,
+				Level:           30,
+				Rank:            1125,
+				CurrentExp:      47154,
+				NextLevelExp:    54934,
+				BasicsUpdatedAt: time.Now(),
 			},
 			wantErr: nil,
 		},
