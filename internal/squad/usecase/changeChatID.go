@@ -9,7 +9,6 @@ import (
 	"github.com/pkg/errors"
 )
 
-
 func (u *uc) ChangeChatID(ctx context.Context, scope permissions.Scope, chatID int64) (*domain.Squad, error) {
 	// Permissions check
 	if scope.PlayerRole < permissions.PlayerRoleUser {
@@ -17,6 +16,14 @@ func (u *uc) ChangeChatID(ctx context.Context, scope permissions.Scope, chatID i
 	}
 	if scope.SquadID == nil || scope.SquadRole < permissions.SquadRoleLeader {
 		return nil, permissions.ErrForbidden
+	}
+
+	// Check if chat is already attached to a squad
+	_, err := u.repo.GetByChatID(ctx, chatID)
+	if err == nil {
+		return nil, domain.ErrChatAlreadyAttached
+	} else if !errors.Is(err, domain.ErrSquadNotFound) {
+		return nil, errors.Wrap(err, "squad repo")
 	}
 
 	// Get squad

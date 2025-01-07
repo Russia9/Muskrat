@@ -30,6 +30,14 @@ func (u *uc) Create(ctx context.Context, scope permissions.Scope, chatID int64, 
 		return nil, domain.ErrNeedProfileUpdate
 	}
 
+	// Check if chat is already attached to a squad
+	_, err = u.repo.GetByChatID(ctx, chatID)
+	if err == nil {
+		return nil, domain.ErrChatAlreadyAttached
+	} else if !errors.Is(err, domain.ErrSquadNotFound) {
+		return nil, errors.Wrap(err, "squad repo")
+	}
+
 	// Create squad
 	obj := &domain.Squad{
 		ID:        uuid.NewString(),

@@ -23,6 +23,8 @@ type Squad struct {
 // Errors
 var ErrSquadNotFound = errors.New("squad not found")
 var ErrAlreadyInSquad = errors.New("already in squad")
+var ErrNotInSquad = errors.New("not in squad")
+var ErrChatAlreadyAttached = errors.New("chat already attached")
 
 // Interfaces
 type SquadUsecase interface {

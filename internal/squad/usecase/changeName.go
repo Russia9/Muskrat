@@ -9,13 +9,15 @@ import (
 	"github.com/pkg/errors"
 )
 
-
 func (u *uc) ChangeName(ctx context.Context, scope permissions.Scope, name string) (*domain.Squad, error) {
 	// Permissions check
 	if scope.PlayerRole < permissions.PlayerRoleUser {
 		return nil, permissions.ErrForbidden
 	}
-	if scope.SquadID == nil || scope.SquadRole < permissions.SquadRoleLeader {
+	if scope.SquadID == nil {
+		return nil, domain.ErrNotInSquad
+	}
+	if scope.SquadRole < permissions.SquadRoleLeader {
 		return nil, permissions.ErrForbidden
 	}
 

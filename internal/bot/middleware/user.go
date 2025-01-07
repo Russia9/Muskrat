@@ -57,6 +57,10 @@ func (m *Middleware) Player(next telebot.HandlerFunc) telebot.HandlerFunc {
 		m.layout.SetLocale(c, player.Language)
 
 		// Process request
-		return next(c)
+		err = next(c)
+		if errors.Is(err, permissions.ErrForbidden) {
+			return c.Send(m.layout.Text(c, "forbidden"))
+		}
+		return err
 	}
 }

@@ -11,9 +11,9 @@ import (
 	"github.com/pkg/errors"
 )
 
-var mePlayerNameRegex = regexp.MustCompile("([🇮🇲🇻🇦🇪🇺🇲🇴]+)([a-zA-Z0-9 _]{4,16}) explorer") // PlayerName & Castle
+var mePlayerNameRegex = regexp.MustCompile("([🇮🇲🇻🇦🇪🇺🇲🇴]+)(?:\\[\\w{2,3}\\])?([a-zA-Z0-9 _]{4,16}) explorer") // PlayerName & Castle
 
-var balanceRegex = regexp.MustCompile("🪙(\\d+) 💰(\\d+)")
+var balanceRegex = regexp.MustCompile("🪙(\\d+)(?: 💰(\\d+))?")
 
 // ParseMe parses the Me message and updates the player's info
 func (u *uc) ParseMe(ctx context.Context, scope permissions.Scope, me string) (*domain.Player, error) {
@@ -49,15 +49,16 @@ func (u *uc) ParseMe(ctx context.Context, scope permissions.Scope, me string) (*
 
 	// Parse Balance
 	balance := balanceRegex.FindStringSubmatch(me)
-	if len(balance) != 3 {
-		return nil, domain.ErrInvalidText
-	}
-	player.PlayerBalance, err = strconv.Atoi(balance[1])
-	if err != nil {
-		return nil, domain.ErrInvalidText
-	}
-	player.BankBalance, err = strconv.Atoi(balance[2])
-	if err != nil {
+	if len(balance) == 3 {
+		player.PlayerBalance, err = strconv.Atoi(balance[1])
+		if err != nil {
+			return nil, domain.ErrInvalidText
+		}
+		player.BankBalance, err = strconv.Atoi(balance[2])
+		if err != nil {
+			player.BankBalance = 0
+		}
+	} else {
 		return nil, domain.ErrInvalidText
 	}
 	player.BalanceUpdatedAt = time.Now()
