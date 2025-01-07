@@ -22,14 +22,15 @@ squad_help: |
   <b>🔍 Squad info:</b>
   /squad_info - Get squad info.
   /squad_members - Get squad members.
-  /squad_help  - Show this message.
+  /squad_help - Show this message.
 
   <b>🤓 Player management:</b> <i>[Squad Leader only]</i>
-  /squad_add  - Add a player to the squad. Use in reply to the player's message.
+  /squad_add - Add a player to the squad. Use in reply to the player's message. Must be used in the squad chat.
   /squad_remove [id/@username] - Remove a player from the squad. Use in reply to the player's message or specify the player.
 
-  <b>🚫 Danger zone:</b> <i>[Squad Leader only]</i>
-  /squad_delete  - Delete the squad.
+  <b>🚫 Danger zone:</b>
+  /squad_delete - Delete the squad. <i>[Squad Leader only]</i>
+  /squad_leave - Leave the squad.
 
 squad_not_in_chat: |
   <b>⚠️ Not in chat</b>

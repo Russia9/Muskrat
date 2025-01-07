@@ -13,8 +13,10 @@ func (u *uc) Get(ctx context.Context, scope permissions.Scope, id int64) (*domai
 	if scope.PlayerRole < permissions.PlayerRoleUnregistered {
 		return nil, permissions.ErrForbidden
 	}
-	if scope.ID != id { // TODO: Add permission for viewing squad members for squad leaders
-		return nil, permissions.ErrForbidden
+	if scope.PlayerRole < permissions.PlayerRoleRoot {
+		if scope.ID != id && scope.SquadRole < permissions.SquadRoleSquire {
+			return nil, permissions.ErrForbidden
+		}
 	}
 
 	// Get object from repository

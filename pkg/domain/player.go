@@ -74,6 +74,7 @@ var ErrPlayerNotFound = errors.New("player not found")
 var ErrInvalidUsername = errors.New("invalid username")
 var ErrInvalidText = errors.New("invalid text")
 var ErrNeedProfileUpdate = errors.New("need profile update")
+var ErrLeaderCannotLeave = errors.New("leader cannot leave squad")
 
 // Interfaces
 type PlayerUsecase interface {
@@ -85,6 +86,9 @@ type PlayerUsecase interface {
 	ParseMe(ctx context.Context, scope permissions.Scope, me string) (*Player, error)
 	ParseHero(ctx context.Context, scope permissions.Scope, hero string) (*Player, error)
 	ParseSchool(ctx context.Context, scope permissions.Scope, school string) (*Player, error)
+
+	SquadAdd(ctx context.Context, scope permissions.Scope, id int64) (*Player, error)
+	SquadRemove(ctx context.Context, scope permissions.Scope, id int64) (*Player, error)
 
 	Seen(ctx context.Context, scope permissions.Scope, username string) (*Player, error)
 }

@@ -22,17 +22,13 @@ const (
 	PlayerRoleRoot
 )
 
-type SquadRole string
+type SquadRole int
 
 const (
-	SquadRoleNone   SquadRole = ""
-	SquadRoleMember SquadRole = "member"
-
-	SquadRoleBartender SquadRole = "bartender"
-	SquadRoleSquire    SquadRole = "squire"
-	SquadRoleCommander SquadRole = "commander"
-
-	SquadRoleLeader SquadRole = "leader"
+	SquadRoleNone SquadRole = iota
+	SquadRoleMember
+	SquadRoleSquire
+	SquadRoleLeader
 )
 
 var ErrForbidden = errors.New("forbidden")
