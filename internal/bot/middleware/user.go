@@ -46,7 +46,7 @@ func (m *Middleware) Player(next telebot.HandlerFunc) telebot.HandlerFunc {
 		}
 
 		// Run Player.Seen
-		player, err = m.player.Seen(context.Background(), scope, player.Username)
+		player, err = m.player.Seen(context.Background(), scope, c.Sender().Username)
 		if err != nil {
 			return errors.Wrap(err, "user usecase")
 		}
