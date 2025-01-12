@@ -1,16 +1,15 @@
-# Muskrat
+# Muskrat [@MuskratBot](https://t.me/MuskratBot)
 Stock and finance management for squads in ChatWars: Explorers
+
 
 ## Roadmap
 
-- [x] Basic structure
-- [x] Player entity
-- [x] Parse Me, /hero, /school
-- [x] Squad entity
-- [x] Squad commands
-- [x] Squad Player Management
-- [x] Basic finance management
-- [ ] Guild commands (?)
-- [ ] Basic stock management
-
-to be continued
+- [x] 🏅 Me, /hero, /school forwards parsing
+- [x] Squad functionality and player management
+- [x] Squad finance management
+- [ ] Raid boss respawn times (Planned for 0.2)
+- [ ] Guild functionality (Planned for 0.2)
+- [ ] Guild and player stock parsing (Planned for 0.2)
+- [ ] Squad and guild roster (Planned for 0.2)
+- [ ] Craft calculations based on guild/player stock
+- [ ] Google Sheets integration
