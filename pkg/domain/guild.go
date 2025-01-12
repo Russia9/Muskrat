@@ -3,6 +3,7 @@ package domain
 import (
 	"context"
 	"errors"
+	"time"
 
 	"github.com/Russia9/Muskrat/pkg/permissions"
 )
@@ -18,16 +19,18 @@ type Guild struct {
 
 	Level int
 
-	CreatedAt int64
-	UpdatedAt int64
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 // Errors
 var ErrGuildNotFound = errors.New("guild not found")
+var ErrGuildAlreadyExists = errors.New("guild already exists")
+var ErrAlreadyInGuild = errors.New("already in guild")
 
 // Interfaces
 type GuildUsecase interface {
-	Create(ctx context.Context, scope permissions.Scope, name, tag, leaderPlayerName string, level int) (*Guild, error)
+	Create(ctx context.Context, scope permissions.Scope, leader int64, name, tag string, level int) (*Guild, error)
 
 	Get(ctx context.Context, scope permissions.Scope, id string) (*Guild, error)
 	GetByTag(ctx context.Context, scope permissions.Scope, tag string) (*Guild, error)
