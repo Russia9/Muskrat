@@ -18,7 +18,7 @@ func NewGuildRepo(db *mongo.Database) domain.GuildRepository {
 }
 
 func (r *repo) Create(ctx context.Context, obj *domain.Guild) error {
-	// Run InsertOne query
+	// Insert object
 	_, err := r.c.InsertOne(ctx, obj)
 	if err != nil {
 		return errors.Wrap(err, "mongo")
@@ -28,7 +28,7 @@ func (r *repo) Create(ctx context.Context, obj *domain.Guild) error {
 }
 
 func (r *repo) Delete(ctx context.Context, id string) error {
-	// Run Delete query
+	// Delete object
 	_, err := r.c.DeleteOne(ctx, bson.M{"_id": id})
 	if err != nil {
 		return errors.Wrap(err, "mongo")
@@ -137,7 +137,7 @@ func (r *repo) ListBySquad(ctx context.Context, squadID string) ([]*domain.Guild
 }
 
 func (r *repo) Update(ctx context.Context, squad *domain.Guild) error {
-	// Run ReplaceOne query
+	// Update object
 	_, err := r.c.ReplaceOne(ctx, bson.M{"_id": squad.ID}, squad)
 	if err != nil {
 		return errors.Wrap(err, "mongo")
