@@ -8,16 +8,16 @@ import (
 	"github.com/pkg/errors"
 )
 
-func (u *uc) Locale(ctx context.Context, scope permissions.Scope, lang string) (*domain.Player, error) {
+func (u *uc) Locale(ctx context.Context, scope permissions.Scope, locale string) (*domain.Player, error) {
 	// Permission check
 	if scope.PlayerRole < permissions.PlayerRoleUser {
 		return nil, permissions.ErrForbidden
 	}
 
-	// Check if language is valid
+	// Check if locale is valid
 	valid := false
-	for _, l := range domain.Languages {
-		if l == lang {
+	for _, l := range domain.Locales {
+		if l == locale {
 			valid = true
 			break
 		}
@@ -33,7 +33,7 @@ func (u *uc) Locale(ctx context.Context, scope permissions.Scope, lang string) (
 	}
 
 	// Update language
-	pl.Locale = lang
+	pl.Locale = locale
 
 	// Save player
 	err = u.repo.Update(ctx, pl)

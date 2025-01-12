@@ -40,6 +40,7 @@ func (u *uc) SquadRemove(ctx context.Context, scope permissions.Scope, id int64)
 
 	// Remove player from squad
 	pl.SquadID = nil
+	pl.SquadRole = permissions.SquadRoleNone
 
 	// Save player
 	err = u.repo.Update(ctx, pl)

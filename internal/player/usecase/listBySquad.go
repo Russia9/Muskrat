@@ -15,6 +15,9 @@ func (u *uc) ListBySquad(ctx context.Context, scope permissions.Scope, squadID s
 	if scope.SquadRole < permissions.SquadRoleMember || scope.SquadID == nil {
 		return nil, permissions.ErrForbidden
 	}
+	if scope.PlayerRole < permissions.PlayerRoleInternal && *scope.SquadID != squadID {
+		return nil, permissions.ErrForbidden
+	}
 
 	// Fetch players
 	players, err := u.repo.ListBySquad(ctx, squadID)

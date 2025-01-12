@@ -10,7 +10,9 @@ func (b *Bot) Menu(c telebot.Context) error {
 	}
 
 	// Generate markup
-	m := &telebot.ReplyMarkup{}
+	m := &telebot.ReplyMarkup{
+		ResizeKeyboard: true,
+	}
 	m.Reply(
 		m.Row(m.Text(b.l.Text(c, "menu_finance")), m.Text(b.l.Text(c, "menu_craft"))),
 		m.Row(m.Text(b.l.Text(c, "menu_roster")), m.Text(b.l.Text(c, "menu_stock"))),

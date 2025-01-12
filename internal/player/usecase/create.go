@@ -23,7 +23,7 @@ func (u *uc) Create(ctx context.Context, scope permissions.Scope, id int64, user
 
 		SquadRole: permissions.SquadRoleNone, // Default
 
-		Locale: "ru", // Default
+		Locale: domain.DefaultLocale,
 
 		FirstSeen: time.Now(),
 		LastSeen:  time.Now(),

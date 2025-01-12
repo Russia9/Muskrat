@@ -54,7 +54,20 @@ func (m *Middleware) Player(next telebot.HandlerFunc) telebot.HandlerFunc {
 		// Set Player and Scope in context
 		c.Set("player", player)
 		c.Set("scope", scope)
-		m.layout.SetLocale(c, player.Locale)
+
+		// Check and set Player locale
+		found := false
+		for _, locale := range domain.Locales {
+			if locale == player.Locale {
+				found = true
+				break
+			}
+		}
+		if found {
+			m.layout.SetLocale(c, player.Locale)
+		} else {
+			m.layout.SetLocale(c, domain.DefaultLocale)
+		}
 
 		// Process request
 		err = next(c)

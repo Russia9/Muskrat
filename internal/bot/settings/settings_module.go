@@ -21,14 +21,14 @@ type Module struct {
 func NewModule(tb *telebot.Bot, l *layout.Layout, player domain.PlayerUsecase) *Module {
 	m := &Module{player, tb, l}
 
-	tb.Handle("/lang", m.HandleLocale)
+	tb.Handle("/lang", m.Locale)
 
 	return m
 }
 
 var LangRegex = regexp.MustCompile(`^/lang (en|ru)$`)
 
-func (m *Module) HandleLocale(c telebot.Context) error {
+func (m *Module) Locale(c telebot.Context) error {
 	scope := c.Get("scope").(permissions.Scope)
 
 	// Check input

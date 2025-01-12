@@ -76,7 +76,9 @@ func (p Player) Updated() bool {
 var UsernameRegex = regexp.MustCompile("^\\w{4,32}$")
 var ProfileUpdateInterval = 48 * time.Hour
 
-var Languages = []string{"en", "ru"}
+const DefaultLocale = "ru"
+
+var Locales = []string{"en", "ru"}
 
 // Errors
 var ErrPlayerNotFound = errors.New("player not found")

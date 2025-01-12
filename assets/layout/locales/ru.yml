@@ -151,3 +151,15 @@ squad_delete_success: |
   <b>🗑 Отряд удален</b>
 
   Отряд был удален.
+
+# Finance
+finance_squad: |
+  <b>💰 Финансы (Отряд)</b>
+
+  <pre>
+  {{ range .Players }}
+  {{ printf $.NameFmt .Name }}|🪙{{ printf $.PlayerBalanceFmt .PlayerBalance }}|💰{{ printf $.BankBalanceFmt .BankBalance }}|{{ .Time }}{{ end }}
+  </pre>
+
+  <b>Всего:</b> {{ .TotalBalance }}
+  <b>Актуально:</b> {{ .CurrentBalance }} (Обновлено менее 48 часов назад)

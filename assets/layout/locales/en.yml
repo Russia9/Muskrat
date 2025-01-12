@@ -152,3 +152,15 @@ squad_delete_success: |
   <b>🗑 Squad deleted</b>
 
   Squad has been deleted.
+
+# Finance
+finance_squad: |
+  <b>💰 Finance (Squad)</b>
+
+  <pre>
+  {{ range .Players }}
+  {{ printf $.NameFmt .Name }}|🪙{{ printf $.PlayerBalanceFmt .PlayerBalance }}|💰{{ printf $.BankBalanceFmt .BankBalance }}|{{ .Time }}{{ end }}
+  </pre>
+
+  <b>Total:</b> {{ .TotalBalance }}
+  <b>Current:</b> {{ .CurrentBalance }} (Last update 48h or less)
