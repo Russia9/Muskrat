@@ -23,8 +23,8 @@ func NewModule(tb *telebot.Bot, l *layout.Layout, player domain.PlayerUsecase, s
 
 	tb.Handle("/squad_help", m.SquadHelp)
 
-	tb.Handle("/player_add", m.SquadAdd)
-	tb.Handle("/player_remove", m.SquadRemove)
+	tb.Handle("/squad_add", m.SquadAdd)
+	tb.Handle("/squad_kick", m.SquadKick)
 
 	tb.Handle("/squad_delete", m.SquadDelete)
 	tb.Handle("/squad_delete_confirm", m.SquadDeleteConfirm)

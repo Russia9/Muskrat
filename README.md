@@ -7,9 +7,9 @@ Stock and finance management for squads in ChatWars: Explorers
 - [x] Player entity
 - [x] Parse Me, /hero, /school
 - [x] Squad entity
-- [ ] Squad commands
-- [ ] Squad Player Management
-- [ ] Basic finance management
+- [x] Squad commands
+- [x] Squad Player Management
+- [x] Basic finance management
 - [ ] Guild commands (?)
 - [ ] Basic stock management
 

@@ -47,12 +47,16 @@ squad_help: |
 
   <b>🔍 Squad info:</b>
   /squad_info - Get squad info.
-  /squad_members - Get squad members.
   /squad_help - Show this message.
 
   <b>🤓 Player management:</b> <i>[Squad Leader only]</i>
-  /player_add - Add a player to the squad. Use in reply to the player's message. Must be used in the squad chat.
-  /player_remove [id/@username] - Remove a player from the squad. Use in reply to the player's message or specify the player.
+  /squad_add - Add a player to the squad. Use in reply to the player's message. Must be used in the squad chat.
+  /squad_kick [id/@username] - Remove a player from the squad. Use in reply to the player's message or specify the player.
+
+  <b>🏘 Guild management:</b> <i>[Squad Leader only]</i>
+  /squad_guild_add - Add a guild to the squad. Use in reply to the <code>👥 Guild</code> message forward.
+  /squad_guild_remove [id/tag] - Remove a guild from the squad. Use in reply to the <code>👥 Guild</code> message forward or specify the guild.
+  To add members to the guild you can forward the <code>/g_idlist</code> command result.
 
   <b>🚫 Danger zone:</b>
   /squad_delete - Delete the squad. <i>[Squad Leader only]</i>
@@ -122,22 +126,22 @@ squad_add_success: |
 
   Player {{ .Mention }} has been added to the squad.
 
-squad_remove_wrong_format: |
+squad_kick_wrong_format: |
   <b>⚠️ Wrong format</b>
 
   Please, use the following format:
-  /squad_remove [id/@username]
+  /squad_kick [id/@username]
 
   Or use this command in reply to the player's message.
-squad_remove_not_in_squad: |
+squad_kick_not_in_squad: |
   <b>⚠️ Not in a squad</b>
 
   Player is not a member of any squad.
-squad_remove_leader_can_not_leave: |
+squad_kick_leader_can_not_leave: |
   <b>⚠️ Leader can not leave</b>
 
   Squad leader can not leave the squad. Please, use /squad_delete command to delete the squad.
-squad_remove_success: |
+squad_kick_success: |
   <b>👋 Player removed</b>
 
   Player {{ .Mention }} has been removed from the squad.

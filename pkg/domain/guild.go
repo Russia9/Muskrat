@@ -3,6 +3,8 @@ package domain
 import (
 	"context"
 	"errors"
+
+	"github.com/Russia9/Muskrat/pkg/permissions"
 )
 
 // Entity
@@ -25,6 +27,11 @@ var ErrGuildNotFound = errors.New("guild not found")
 
 // Interfaces
 type GuildUsecase interface {
+	Create(ctx context.Context, scope permissions.Scope, name, tag, leaderPlayerName string, level int) (*Guild, error)
+
+	Get(ctx context.Context, scope permissions.Scope, id string) (*Guild, error)
+	GetByTag(ctx context.Context, scope permissions.Scope, tag string) (*Guild, error)
+	GetByLeader(ctx context.Context, scope permissions.Scope, leaderID int64) (*Guild, error)
 }
 
 type GuildRepository interface {
