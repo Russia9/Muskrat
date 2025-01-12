@@ -20,7 +20,7 @@ func (m *Middleware) Logger(next telebot.HandlerFunc) telebot.HandlerFunc {
 		// Create log entry
 		var record *zerolog.Event
 		if err == nil {
-			record = log.Info()
+			record = log.Debug() // Debug is used for squad chat privacy
 		} else {
 			record = log.Error().Err(err)
 

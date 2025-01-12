@@ -64,9 +64,9 @@ func (m *Module) Finance(c telebot.Context) error {
 
 		// Determine player name (Username or PlayerName)
 		if p.Username != "" {
-			t.Players[i].Name = "@" + p.Username
+			t.Players[i].Name = "@" + utils.ShortString(p.Username, 12)
 		} else {
-			t.Players[i].Name = p.PlayerName
+			t.Players[i].Name = utils.ShortString(p.PlayerName, 12)
 		}
 
 		// Update padding

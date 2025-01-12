@@ -22,3 +22,11 @@ func FormatDuration(d time.Duration) string {
 	}
 	return strconv.Itoa(minutes) + "m"
 }
+
+func ShortString(s string, n int) string {
+	if len(s) > n {
+		return s[:n-3] + "..."
+	}
+
+	return s
+}
