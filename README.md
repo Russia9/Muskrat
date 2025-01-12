@@ -1,6 +1,7 @@
 # Muskrat [@MuskratBot](https://t.me/MuskratBot)
 Stock and finance management for squads in ChatWars: Explorers
 
+The release notes can be found here: [@MuskratUpdates](https://t.me/MuskratUpdates)
 
 ## Roadmap
 
