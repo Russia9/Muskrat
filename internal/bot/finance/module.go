@@ -82,7 +82,7 @@ func (m *Module) Finance(c telebot.Context) error {
 
 		// Add balance to total and count last update time
 		t.TotalBalance += p.PlayerBalance + p.BankBalance
-		if p.BalanceUpdatedAt.After(time.Now().Add(-time.Hour * 48)) {
+		if p.BalanceUpdatedAt.After(time.Now().Add(-time.Hour * 24)) {
 			t.CurrentBalance += p.PlayerBalance + p.BankBalance
 			t.Players[i].Time = utils.FormatDuration(time.Now().Sub(p.BalanceUpdatedAt))
 		} else {

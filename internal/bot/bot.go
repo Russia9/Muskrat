@@ -30,7 +30,7 @@ func NewBot(tb *telebot.Bot, l *layout.Layout, pl domain.PlayerUsecase, sq domai
 
 	// Register middleware
 	m := middleware.NewMiddleware(pl, l)
-	b.tb.Use(middleware.Logger)
+	b.tb.Use(m.Logger)
 	b.tb.Use(m.Player)
 
 	// Create Modules

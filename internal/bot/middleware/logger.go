@@ -3,12 +3,13 @@ package middleware
 import (
 	"time"
 
+	"github.com/Russia9/Muskrat/pkg/utils"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"gopkg.in/telebot.v3"
 )
 
-func Logger(next telebot.HandlerFunc) telebot.HandlerFunc {
+func (m *Middleware) Logger(next telebot.HandlerFunc) telebot.HandlerFunc {
 	return func(c telebot.Context) error {
 		// Start timer
 		start := time.Now()
@@ -22,6 +23,18 @@ func Logger(next telebot.HandlerFunc) telebot.HandlerFunc {
 			record = log.Info()
 		} else {
 			record = log.Error().Err(err)
+
+			// Send error message
+			tmpl := errorTmpl{
+				Time:  time.Now().String(),
+				User:  c.Sender().ID,
+				Error: err.Error(),
+			}
+			c.Send(m.layout.Text(c, "error", tmpl))
+			devChat, err := c.Bot().ChatByID(utils.DeveloperID)
+			if err == nil {
+				c.Bot().Send(devChat, m.layout.TextLocale("en", "error_dev", tmpl))
+			}
 		}
 
 		// Add log fields
@@ -40,4 +53,10 @@ func Logger(next telebot.HandlerFunc) telebot.HandlerFunc {
 
 		return nil
 	}
+}
+
+type errorTmpl struct {
+	Time  string
+	User  int64
+	Error string
 }

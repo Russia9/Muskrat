@@ -4,6 +4,18 @@ wrong_format: "❌ Wrong format"
 need_profile_update: "🔄 Please, update your profile"
 forbidden: "❌ Forbidden"
 
+error: |
+  <b>🚫 An error occurred</b>
+
+  Please, report to the developer: @RussiaNine.
+  <b> Time:</b> {{ .Time }}
+error_dev: |
+  <b>🚫 An error occurred</b>
+
+  <b>Time:</b> {{ .Time }}
+  <b>User:</b> {{ .User }}
+  <b>Error:</b> {{ .Error }}
+
 # Menu
 menu: |
   <b>📚 Main menu</b>
@@ -177,4 +189,4 @@ finance_squad: |
   </pre>
 
   <b>Total:</b> {{ .TotalBalance }}
-  <b>Current:</b> {{ .CurrentBalance }} (Last update 48h or less)
+  <b>Current:</b> {{ .CurrentBalance }} (Last update 24h ago or less)
