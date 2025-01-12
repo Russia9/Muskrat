@@ -16,11 +16,13 @@ type Player struct {
 	Username   string
 	PlayerRole permissions.PlayerRole
 
-	Language string
+	Locale string
 
 	SquadID   *string
-	GuildID   *string
 	SquadRole permissions.SquadRole
+
+	GuildID   *string
+	GuildRole permissions.SquadRole
 
 	FirstSeen time.Time
 	LastSeen  time.Time
@@ -74,12 +76,15 @@ func (p Player) Updated() bool {
 var UsernameRegex = regexp.MustCompile("^\\w{4,32}$")
 var ProfileUpdateInterval = 48 * time.Hour
 
+var Languages = []string{"en", "ru"}
+
 // Errors
 var ErrPlayerNotFound = errors.New("player not found")
 var ErrInvalidUsername = errors.New("invalid username")
 var ErrInvalidText = errors.New("invalid text")
 var ErrNeedProfileUpdate = errors.New("need profile update")
 var ErrLeaderCannotLeave = errors.New("leader cannot leave squad")
+var ErrUnsupportedLanguage = errors.New("unsupported language")
 
 // Interfaces
 type PlayerUsecase interface {
@@ -88,12 +93,16 @@ type PlayerUsecase interface {
 	Get(ctx context.Context, scope permissions.Scope, id int64) (*Player, error)
 	GetByUsername(ctx context.Context, scope permissions.Scope, username string) (*Player, error)
 
+	ListBySquad(ctx context.Context, scope permissions.Scope, squadID string) ([]*Player, error)
+
 	ParseMe(ctx context.Context, scope permissions.Scope, me string) (*Player, error)
 	ParseHero(ctx context.Context, scope permissions.Scope, hero string) (*Player, error)
 	ParseSchool(ctx context.Context, scope permissions.Scope, school string) (*Player, error)
 
 	SquadAdd(ctx context.Context, scope permissions.Scope, id int64) (*Player, error)
 	SquadRemove(ctx context.Context, scope permissions.Scope, id int64) (*Player, error)
+
+	Locale(ctx context.Context, scope permissions.Scope, locale string) (*Player, error)
 
 	Seen(ctx context.Context, scope permissions.Scope, username string) (*Player, error)
 }

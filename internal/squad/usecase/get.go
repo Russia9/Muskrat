@@ -13,7 +13,7 @@ func (u *uc) Get(ctx context.Context, scope permissions.Scope, id string) (*doma
 	if scope.PlayerRole < permissions.PlayerRoleUser {
 		return nil, permissions.ErrForbidden
 	}
-	if scope.PlayerRole < permissions.PlayerRoleRoot && (scope.SquadID == nil || *scope.SquadID != id) {
+	if scope.PlayerRole < permissions.PlayerRoleInternal && (scope.SquadID == nil || *scope.SquadID != id) {
 		return nil, permissions.ErrForbidden
 	}
 

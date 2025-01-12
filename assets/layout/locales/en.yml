@@ -4,6 +4,32 @@ wrong_format: "❌ Wrong format"
 need_profile_update: "🔄 Please, update your profile"
 forbidden: "❌ Forbidden"
 
+# Menu
+menu: |
+  <b>📚 Main menu</b>
+
+  See /help for the list of available commands.
+  Bot captures forwards from CW in PM and squad chats.
+
+  <b>Change language:</b>
+  /lang &lt;en|ru&gt;
+
+menu_finance: "💰 Finance"
+menu_craft: "🛠 Craft"
+menu_roster: "📋 Roster"
+menu_stock: "📦 Stock"
+
+# Settings
+settings_locale_wrong_format: |
+  <b>❌ Wrong format</b>
+
+  Please, use the following format:
+  /locale &lt;en|ru&gt;
+settings_locale_success: |
+  <b>✅ Locale changed</b>
+
+  Locale has been changed to <b>{{ .Locale }}</b>.
+
 # Parse
 parse_too_old: |
   <b>⚠️ Message is too old</b>

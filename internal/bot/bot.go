@@ -3,6 +3,7 @@ package bot
 import (
 	"github.com/Russia9/Muskrat/internal/bot/middleware"
 	"github.com/Russia9/Muskrat/internal/bot/parse"
+	"github.com/Russia9/Muskrat/internal/bot/settings"
 	"github.com/Russia9/Muskrat/internal/bot/squad"
 	"github.com/Russia9/Muskrat/pkg/domain"
 	"gopkg.in/telebot.v3"
@@ -10,30 +11,32 @@ import (
 )
 
 type Bot struct {
-	bot    *telebot.Bot
-	layout *layout.Layout
+	tb *telebot.Bot
+	l  *layout.Layout
 
-	parse *parse.Module
-	squad *squad.Module
+	settings *settings.Module
+	parse    *parse.Module
+	squad    *squad.Module
 }
 
 func NewBot(tb *telebot.Bot, l *layout.Layout, pl domain.PlayerUsecase, sq domain.SquadUsecase) *Bot {
 	b := &Bot{
-		bot:    tb,
-		layout: l,
+		tb: tb,
+		l:  l,
 	}
 
 	// Register middleware
 	m := middleware.NewMiddleware(pl, l)
-	b.bot.Use(middleware.Logger)
-	b.bot.Use(m.Player)
+	b.tb.Use(middleware.Logger)
+	b.tb.Use(m.Player)
 
 	// Create Modules
+	b.settings = settings.NewModule(tb, l, pl)
 	b.parse = parse.NewModule(tb, l, pl)
 	b.squad = squad.NewModule(tb, l, pl, sq)
 
 	// Register handlers
-	b.bot.Handle(telebot.OnText, b.Router)
+	b.tb.Handle(telebot.OnText, b.Router)
 
 	return b
 }
@@ -43,5 +46,5 @@ func (b *Bot) StartAsync() {
 }
 
 func (b *Bot) StartBlocking() {
-	b.bot.Start()
+	b.tb.Start()
 }

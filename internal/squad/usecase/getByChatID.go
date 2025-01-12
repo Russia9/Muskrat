@@ -13,7 +13,7 @@ func (u *uc) GetByChatID(ctx context.Context, scope permissions.Scope, chatID in
 	if scope.PlayerRole < permissions.PlayerRoleUser {
 		return nil, permissions.ErrForbidden
 	}
-	if scope.PlayerRole < permissions.PlayerRoleRoot && scope.SquadID == nil {
+	if scope.PlayerRole < permissions.PlayerRoleInternal && scope.SquadID == nil {
 		return nil, permissions.ErrForbidden
 	}
 
@@ -24,7 +24,7 @@ func (u *uc) GetByChatID(ctx context.Context, scope permissions.Scope, chatID in
 	}
 
 	// Permissions check
-	if scope.PlayerRole < permissions.PlayerRoleRoot && *scope.SquadID != obj.ID {
+	if scope.PlayerRole < permissions.PlayerRoleInternal && *scope.SquadID != obj.ID {
 		return nil, permissions.ErrForbidden
 	}
 
