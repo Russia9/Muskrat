@@ -19,6 +19,16 @@ menu_craft: "🛠 Craft"
 menu_roster: "📋 Roster"
 menu_stock: "📦 Stock"
 
+# Help
+help: |
+  <b>📚 Help</b>
+
+  <b>🛡 Squad commands:</b>
+  /squad_help - Squad commands help.
+
+  <b>💰 Finance commands:</b>
+  /finance_squad - Show squad finance info.
+
 # Settings
 settings_locale_wrong_format: |
   <b>❌ Wrong format</b>
