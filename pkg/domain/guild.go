@@ -32,6 +32,11 @@ type GuildUsecase interface {
 	Get(ctx context.Context, scope permissions.Scope, id string) (*Guild, error)
 	GetByTag(ctx context.Context, scope permissions.Scope, tag string) (*Guild, error)
 	GetByLeader(ctx context.Context, scope permissions.Scope, leaderID int64) (*Guild, error)
+	GetBySquadAndName(ctx context.Context, scope permissions.Scope, squadID, name string) (*Guild, error)
+
+	ListBySquad(ctx context.Context, scope permissions.Scope, squadID string) ([]*Guild, error)
+
+	Update(ctx context.Context, scope permissions.Scope, name, tag string, level int) (*Guild, error)
 }
 
 type GuildRepository interface {
@@ -39,6 +44,8 @@ type GuildRepository interface {
 
 	Get(ctx context.Context, id string) (*Guild, error)
 	GetByTag(ctx context.Context, tag string) (*Guild, error)
+	GetByLeader(ctx context.Context, leaderID int64) (*Guild, error)
+	GetBySquadAndName(ctx context.Context, squadID, name string) (*Guild, error)
 
 	ListBySquad(ctx context.Context, squadID string) ([]*Guild, error)
 

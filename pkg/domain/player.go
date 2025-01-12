@@ -104,6 +104,7 @@ type PlayerUsecase interface {
 	GetByUsername(ctx context.Context, scope permissions.Scope, username string) (*Player, error)
 
 	ListBySquad(ctx context.Context, scope permissions.Scope, squadID string, sort PlayerSort) ([]*Player, error)
+	ListByGuild(ctx context.Context, scope permissions.Scope, guildID string, sort PlayerSort) ([]*Player, error)
 
 	ParseMe(ctx context.Context, scope permissions.Scope, me string) (*Player, error)
 	ParseHero(ctx context.Context, scope permissions.Scope, hero string) (*Player, error)

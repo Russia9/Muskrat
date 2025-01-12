@@ -36,8 +36,9 @@ func (m *Middleware) Player(next telebot.HandlerFunc) telebot.HandlerFunc {
 			ID:         player.ID,
 			PlayerRole: player.PlayerRole,
 			SquadID:    player.SquadID,
-			GuildID:    player.GuildID,
 			SquadRole:  player.SquadRole,
+			GuildID:    player.GuildID,
+			GuildRole:  player.GuildRole,
 		}
 
 		// Check if player is banned

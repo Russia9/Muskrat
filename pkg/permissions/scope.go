@@ -9,8 +9,10 @@ type Scope struct {
 	PlayerRole PlayerRole
 
 	SquadID   *string
-	GuildID   *string
 	SquadRole SquadRole
+
+	GuildID   *string
+	GuildRole SquadRole
 }
 
 type PlayerRole int
