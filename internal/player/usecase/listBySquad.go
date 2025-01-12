@@ -7,7 +7,7 @@ import (
 	"github.com/Russia9/Muskrat/pkg/permissions"
 )
 
-func (u *uc) ListBySquad(ctx context.Context, scope permissions.Scope, squadID string) ([]*domain.Player, error) {
+func (u *uc) ListBySquad(ctx context.Context, scope permissions.Scope, squadID string, sort domain.PlayerSort) ([]*domain.Player, error) {
 	// Permissions check
 	if scope.PlayerRole < permissions.PlayerRoleUser {
 		return nil, permissions.ErrForbidden
@@ -20,7 +20,7 @@ func (u *uc) ListBySquad(ctx context.Context, scope permissions.Scope, squadID s
 	}
 
 	// Fetch players
-	players, err := u.repo.ListBySquad(ctx, squadID)
+	players, err := u.repo.ListBySquad(ctx, squadID, sort)
 	if err != nil {
 		return nil, err
 	}

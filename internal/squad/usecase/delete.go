@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 
+	"github.com/Russia9/Muskrat/pkg/domain"
 	"github.com/Russia9/Muskrat/pkg/permissions"
 	"github.com/pkg/errors"
 )
@@ -17,7 +18,7 @@ func (u *uc) Delete(ctx context.Context, scope permissions.Scope) error {
 	}
 
 	// Get all squad members
-	members, err := u.player.ListBySquad(ctx, *scope.SquadID)
+	members, err := u.player.ListBySquad(ctx, *scope.SquadID, domain.PlayerSortLevel)
 	if err != nil {
 		return errors.Wrap(err, "player repo")
 	}

@@ -40,7 +40,7 @@ func (m *Module) Finance(c telebot.Context) error {
 	}
 
 	// Get player list
-	players, err := m.player.ListBySquad(context.Background(), scope, *scope.SquadID)
+	players, err := m.player.ListBySquad(context.Background(), scope, *scope.SquadID, domain.PlayerSortBalance)
 	if err != nil {
 		return err
 	}

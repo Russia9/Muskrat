@@ -65,9 +65,56 @@ func (r *repo) GetByUsername(ctx context.Context, username string) (*domain.Play
 	return &obj, nil
 }
 
-func (r *repo) ListBySquad(ctx context.Context, squadID string) ([]*domain.Player, error) {
+func listAggregation(field, value string, sort domain.PlayerSort) bson.A {
+	pipeline := bson.A{
+		bson.M{
+			"$match": bson.M{
+				field: value,
+			},
+		},
+	}
+
+	switch sort {
+	case domain.PlayerSortLevel:
+		pipeline = append(pipeline,
+			bson.M{
+				"$sort": bson.M{
+					"level": -1,
+				},
+			})
+	case domain.PlayerSortRank:
+		pipeline = append(pipeline,
+			bson.M{
+				"$sort": bson.M{
+					"rank": -1,
+				},
+			})
+	case domain.PlayerSortBalance:
+		pipeline = append(pipeline,
+			bson.M{
+				"$addFields": bson.M{
+					"totalbalance": bson.M{
+						"$add": bson.A{
+							"$playerbalance",
+							"$bankbalance",
+						},
+					},
+				},
+			})
+		pipeline = append(pipeline,
+			bson.M{
+				"$sort": bson.M{
+					"totalbalance": -1,
+				},
+			})
+	}
+
+	return pipeline
+}
+
+func (r *repo) ListBySquad(ctx context.Context, squadID string, sort domain.PlayerSort) ([]*domain.Player, error) {
 	// Find objects
-	cur, err := r.c.Find(ctx, bson.M{"squadid": squadID})
+	cur, err := r.c.Aggregate(ctx, listAggregation("squadid", squadID, sort))
 	if err != nil {
 		return nil, errors.Wrap(err, "mongo")
 	}
@@ -82,9 +129,9 @@ func (r *repo) ListBySquad(ctx context.Context, squadID string) ([]*domain.Playe
 	return objs, nil
 }
 
-func (r *repo) ListByGuild(ctx context.Context, guildID string) ([]*domain.Player, error) {
+func (r *repo) ListByGuild(ctx context.Context, guildID string, sort domain.PlayerSort) ([]*domain.Player, error) {
 	// Find objects
-	cur, err := r.c.Find(ctx, bson.M{"guildid": guildID})
+	cur, err := r.c.Aggregate(ctx, listAggregation("guildid", guildID, sort))
 	if err != nil {
 		return nil, errors.Wrap(err, "mongo")
 	}

@@ -80,6 +80,14 @@ const DefaultLocale = "ru"
 
 var Locales = []string{"en", "ru"}
 
+type PlayerSort int
+
+const (
+	PlayerSortLevel PlayerSort = iota
+	PlayerSortRank
+	PlayerSortBalance
+)
+
 // Errors
 var ErrPlayerNotFound = errors.New("player not found")
 var ErrInvalidUsername = errors.New("invalid username")
@@ -95,7 +103,7 @@ type PlayerUsecase interface {
 	Get(ctx context.Context, scope permissions.Scope, id int64) (*Player, error)
 	GetByUsername(ctx context.Context, scope permissions.Scope, username string) (*Player, error)
 
-	ListBySquad(ctx context.Context, scope permissions.Scope, squadID string) ([]*Player, error)
+	ListBySquad(ctx context.Context, scope permissions.Scope, squadID string, sort PlayerSort) ([]*Player, error)
 
 	ParseMe(ctx context.Context, scope permissions.Scope, me string) (*Player, error)
 	ParseHero(ctx context.Context, scope permissions.Scope, hero string) (*Player, error)
@@ -115,8 +123,8 @@ type PlayerRepository interface {
 	Get(ctx context.Context, id int64) (*Player, error)
 	GetByUsername(ctx context.Context, username string) (*Player, error)
 
-	ListBySquad(ctx context.Context, squadID string) ([]*Player, error)
-	ListByGuild(ctx context.Context, guildID string) ([]*Player, error)
+	ListBySquad(ctx context.Context, squadID string, sort PlayerSort) ([]*Player, error)
+	ListByGuild(ctx context.Context, guildID string, sort PlayerSort) ([]*Player, error)
 
 	CountBySquad(ctx context.Context, squadID string) (int64, error)
 	CountByGuild(ctx context.Context, guildID string) (int64, error)
