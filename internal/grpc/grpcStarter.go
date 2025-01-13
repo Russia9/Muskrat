@@ -13,9 +13,9 @@ type Starter struct {
 	port       int
 }
 
-func NewGrpcStarter(port int, repo domain.RaidUsecase) *Starter {
+func NewGrpcStarter(port int, uc domain.RaidUsecase) *Starter {
 	grpcServer := grpc.NewServer()
-	raidService.Register(grpcServer, repo)
+	raidService.Register(grpcServer, uc)
 	return &Starter{
 		grpcServer: grpcServer,
 		port:       port,

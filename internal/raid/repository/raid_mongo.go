@@ -24,7 +24,7 @@ func (r repo) Create(ctx context.Context, obj *domain.Raid) error {
 	return nil
 }
 
-func (r repo) Get(ctx context.Context, raid *domain.Raid) (*domain.Raid, error) {
+func (r repo) List(ctx context.Context) (*domain.Raid, error) {
 	//TODO implement me
 	panic("implement me")
 }

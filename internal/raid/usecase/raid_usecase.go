@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 	"github.com/Russia9/Muskrat/pkg/domain"
+	"github.com/pkg/errors"
 	"time"
 )
 
@@ -14,13 +15,17 @@ func NewRaidUsecase(repository domain.RaidRepository) domain.RaidUsecase {
 	return &uc{repo: repository}
 }
 
-func (u uc) Create(ctx context.Context, name string, cell string, preRaidTime int32) error {
+func (u uc) UpdateOrCreate(ctx context.Context, name string, cell string, preRaidTime int32) error {
 	raidTime := time.Now().UTC().Add(time.Duration(preRaidTime) * time.Minute)
 	raidInfo := &domain.Raid{Name: name, Cell: cell, Time: raidTime}
-	return u.repo.Create(ctx, raidInfo)
+	err := u.repo.Create(ctx, raidInfo)
+	if err != nil {
+		return errors.Wrap(err, "update or create raid ")
+	}
+	return nil
 }
 
-func (u uc) Get(ctx context.Context, raid *domain.Raid) (*domain.Raid, error) {
+func (u uc) List(ctx context.Context) (*domain.Raid, error) {
 	//TODO implement me
 	panic("implement me")
 }
