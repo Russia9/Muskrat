@@ -12,6 +12,8 @@ services:
     build: .
     restart: always
     env_file: ".muskrat.env"
+    ports:
+      - "50052:50052"
 
 volumes:
   mongo_data:

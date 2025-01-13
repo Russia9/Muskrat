@@ -2,13 +2,16 @@ package main
 
 import (
 	"context"
+	"github.com/Russia9/Muskrat/internal/grpc"
 	"os"
 	"strconv"
 
 	playerRepo "github.com/Russia9/Muskrat/internal/player/repository/mongo"
 	playerUsecase "github.com/Russia9/Muskrat/internal/player/usecase"
+	raidRepo "github.com/Russia9/Muskrat/internal/raid/repository"
+	raidUsecase "github.com/Russia9/Muskrat/internal/raid/usecase"
 	squadRepo "github.com/Russia9/Muskrat/internal/squad/repository/mongo"
-	squadUsecae "github.com/Russia9/Muskrat/internal/squad/usecase"
+	squadUsecase "github.com/Russia9/Muskrat/internal/squad/usecase"
 
 	"github.com/Russia9/Muskrat/internal/bot"
 	"github.com/Russia9/Muskrat/pkg/utils"
@@ -68,12 +71,17 @@ func main() {
 	log.Debug().Msg("Repository creation")
 	playerRepo := playerRepo.NewPlayerRepo(db)
 	squadRepo := squadRepo.NewSquadRepo(db)
+	raidRepo := raidRepo.NewRaidRepo(db)
 
 	// Usecase creation
 	log.Debug().Msg("Usecase creation")
 	playerUC := playerUsecase.NewPlayerUsecase(playerRepo)
-	squadUC := squadUsecae.NewSquadUsecase(squadRepo, playerRepo)
+	squadUC := squadUsecase.NewSquadUsecase(squadRepo, playerRepo)
+	raidUC := raidUsecase.NewRaidUsecase(raidRepo)
 
+	//grpc
+	application := grpc.NewGrpcStarter(50052, raidUC)
+	go application.Start()
 	// Bot
 	log.Trace().Msg("Layout loading")
 	l, err := layout.New("assets/layout/layout.yml")

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package raidService;
+
+option go_package = "github.com/Russia9/Muskrat/pkg/protobuf";
+
+service Raid{
+  rpc GetRaidInfo(RaidInfo) returns (Null) {};
+}
+
+message RaidInfo{
+  string bossName = 1;
+  string cell = 2;
+  int32 time = 3;
+}
+
+message Null{}
