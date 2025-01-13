@@ -82,7 +82,26 @@ func (u *uc) Create(ctx context.Context, scope permissions.Scope, leader int64, 
 }
 
 func (u *uc) Get(ctx context.Context, scope permissions.Scope, id string) (*domain.Guild, error) {
-	panic("unimplemented")
+	// Permission check
+	if scope.PlayerRole < permissions.PlayerRoleUser {
+		return nil, permissions.ErrForbidden
+	}
+	if scope.SquadRole < permissions.SquadRoleSquire && (scope.GuildRole < permissions.SquadRoleMember || scope.GuildID == nil || *scope.GuildID != id) {
+		return nil, permissions.ErrForbidden
+	}
+
+	// Get guild
+	g, err := u.repo.Get(ctx, id)
+	if err != nil {
+		return nil, errors.Wrap(err, "guild repo")
+	}
+
+	// Permission check
+	if scope.SquadRole < permissions.SquadRoleMember || (scope.SquadID != nil && g.SquadID != *scope.SquadID) {
+		return nil, permissions.ErrForbidden
+	}
+
+	return g, nil
 }
 
 func (u *uc) GetByLeader(ctx context.Context, scope permissions.Scope, leaderID int64) (*domain.Guild, error) {
