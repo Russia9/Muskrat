@@ -93,7 +93,7 @@ func main() {
 	if err != nil {
 		log.Fatal().Err(err).Msg("Failed to create bot")
 	}
-	b := bot.NewBot(tb, l, playerUC, squadUC)
+	b := bot.NewBot(tb, l, playerUC, squadUC, raidUC)
 
 	// Start bot
 	log.Info().Msg("Starting bot")

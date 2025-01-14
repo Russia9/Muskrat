@@ -22,14 +22,17 @@ func (u uc) UpdateOrCreate(ctx context.Context, name string, cell string, preRai
 		Cell: cell,
 		Time: raidTime,
 	}
-	err := u.repo.Create(ctx, raidInfo)
+	err := u.repo.UpdateOrCreate(ctx, raidInfo)
 	if err != nil {
 		return errors.Wrap(err, "update or create raid ")
 	}
 	return nil
 }
 
-func (u uc) List(ctx context.Context) (*domain.Raid, error) {
-	//TODO implement me
-	panic("implement me")
+func (u uc) List(ctx context.Context) ([]*domain.Raid, error) {
+	raids, err := u.repo.List(ctx)
+	if err != nil {
+		return nil, errors.Wrap(err, "list raid ")
+	}
+	return raids, nil
 }

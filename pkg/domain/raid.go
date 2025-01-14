@@ -19,10 +19,10 @@ var ErrRaidNotFound = errors.New("raid not found")
 // Interfaces
 type RaidUsecase interface {
 	UpdateOrCreate(ctx context.Context, name string, cell string, preRaidTime int32) error
-	List(ctx context.Context) (*Raid, error)
+	List(ctx context.Context) ([]*Raid, error)
 }
 
 type RaidRepository interface {
 	UpdateOrCreate(ctx context.Context, raid *Raid) error
-	List(ctx context.Context) (*Raid, error)
+	List(ctx context.Context) ([]*Raid, error)
 }
