@@ -26,7 +26,7 @@ func NewModule(tb *telebot.Bot, l *layout.Layout, player domain.PlayerUsecase, s
 
 	tb.Handle("💰 Finance", m.Finance)
 	tb.Handle("💰 Финансы", m.Finance)
-	tb.Handle("/finance_squad", m.Finance)
+	tb.Handle("/finance", m.Finance)
 
 	return m
 }
