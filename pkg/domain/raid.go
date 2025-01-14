@@ -23,6 +23,6 @@ type RaidUsecase interface {
 }
 
 type RaidRepository interface {
-	Create(ctx context.Context, raid *Raid) error
+	UpdateOrCreate(ctx context.Context, raid *Raid) error
 	List(ctx context.Context) (*Raid, error)
 }

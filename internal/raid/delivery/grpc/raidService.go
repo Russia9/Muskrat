@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/Russia9/Muskrat/pkg/domain"
 	"github.com/Russia9/Muskrat/pkg/protobuf"
+	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
 )
 
@@ -17,6 +18,7 @@ func Register(grpcSrv *grpc.Server, uc domain.RaidUsecase) {
 }
 
 func (r *RaidService) GetRaidInfo(ctx context.Context, info *protobuf.RaidInfo) (*protobuf.Null, error) {
+	log.Info().Interface("info", info).Msg("GetRaidInfo")
 	err := r.raid.UpdateOrCreate(ctx, info.BossName, info.Cell, info.Time)
 	if err != nil {
 		return nil, err

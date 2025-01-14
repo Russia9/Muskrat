@@ -17,7 +17,11 @@ func NewRaidUsecase(repository domain.RaidRepository) domain.RaidUsecase {
 
 func (u uc) UpdateOrCreate(ctx context.Context, name string, cell string, preRaidTime int32) error {
 	raidTime := time.Now().UTC().Add(time.Duration(preRaidTime) * time.Minute)
-	raidInfo := &domain.Raid{Name: name, Cell: cell, Time: raidTime}
+	raidInfo := &domain.Raid{
+		Name: name,
+		Cell: cell,
+		Time: raidTime,
+	}
 	err := u.repo.Create(ctx, raidInfo)
 	if err != nil {
 		return errors.Wrap(err, "update or create raid ")
