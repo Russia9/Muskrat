@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"regexp"
+	"strconv"
 
 	"github.com/Russia9/Muskrat/pkg/domain"
 	"github.com/Russia9/Muskrat/pkg/permissions"
@@ -12,7 +13,6 @@ import (
 )
 
 var guildRegex = regexp.MustCompile(`[🇮🇲🇻🇦🇪🇺🇲🇴]+(?:\[(.+)\] )?([\w ]*)\n.*: (.+)\n🏅Level: (\d+)`)
-var guildAddRegex = regexp.MustCompile(`/squad_guild_add (.*)`)
 
 func (m *Module) GuildAdd(c telebot.Context) error {
 	scope := c.Get("scope").(permissions.Scope)
@@ -27,17 +27,12 @@ func (m *Module) GuildAdd(c telebot.Context) error {
 		return c.Send(m.l.Text(c, "squad_add_not_reply"))
 	}
 
-	// Check message format
-	if !guildAddRegex.MatchString(c.Message().Text) {
-		return c.Send(m.l.Text(c, "guild_add_wrong_format"))
-	}
-
 	// Check reply message format
 	if !guildRegex.MatchString(c.Message().ReplyTo.Text) || c.Message().ReplyTo.Sender.ID != utils.ChatWarsBot {
-		return c.Send(m.l.Text(c, "guild_add_wrong_reply_format"))
+		return c.Send(m.l.Text(c, "guild_add_not_reply"))
 	}
 
-	// Get squad by chat
+	// Get Squad by chat
 	sq, err := m.squad.GetByChatID(context.Background(), scope, c.Chat().ID)
 	if errors.Is(err, domain.ErrSquadNotFound) {
 		return c.Send(m.l.Text(c, "not_in_chat"))
@@ -48,7 +43,23 @@ func (m *Module) GuildAdd(c telebot.Context) error {
 		return c.Send(m.l.Text(c, "not_in_chat"))
 	}
 
-	// TODO: Create Guild
+	// Parse guild info
+	match := guildRegex.FindStringSubmatch(c.Message().ReplyTo.Text)
+	name := match[2]
+	tag := match[1]
+	level, _ := strconv.Atoi(match[3])
+
+	// Create Guild
+	g, err := m.guild.Create(context.Background(), scope, c.Message().ReplyTo.Sender.ID, name, tag, level)
+	if errors.Is(err, domain.ErrAlreadyInGuild) {
+		return c.Send(m.l.Text(c, "guild_already_in_guild"))
+	} else if errors.Is(err, domain.ErrGuildAlreadyExists) {
+		return c.Send(m.l.Text(c, "guild_add_already_exists", g))
+	} else if err != nil {
+		return err
+	}
+
+	// TODO: Success message
 
 	return nil
 }

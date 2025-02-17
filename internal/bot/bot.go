@@ -2,6 +2,7 @@ package bot
 
 import (
 	"github.com/Russia9/Muskrat/internal/bot/finance"
+	"github.com/Russia9/Muskrat/internal/bot/guild"
 	"github.com/Russia9/Muskrat/internal/bot/middleware"
 	"github.com/Russia9/Muskrat/internal/bot/parse"
 	"github.com/Russia9/Muskrat/internal/bot/settings"
@@ -18,11 +19,12 @@ type Bot struct {
 	settings *settings.Module
 	parse    *parse.Module
 	squad    *squad.Module
+	guild    *guild.Module
 
 	finance *finance.Module
 }
 
-func NewBot(tb *telebot.Bot, l *layout.Layout, pl domain.PlayerUsecase, sq domain.SquadUsecase) *Bot {
+func NewBot(tb *telebot.Bot, l *layout.Layout, pl domain.PlayerUsecase, sq domain.SquadUsecase, g domain.GuildUsecase) *Bot {
 	b := &Bot{
 		tb: tb,
 		l:  l,
@@ -37,6 +39,7 @@ func NewBot(tb *telebot.Bot, l *layout.Layout, pl domain.PlayerUsecase, sq domai
 	b.settings = settings.NewModule(tb, l, pl)
 	b.parse = parse.NewModule(tb, l, pl)
 	b.squad = squad.NewModule(tb, l, pl, sq)
+	b.guild = guild.NewModule(tb, l, pl, sq, g)
 
 	b.finance = finance.NewModule(tb, l, pl, sq)
 

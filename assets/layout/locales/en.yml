@@ -185,22 +185,26 @@ guild_help: |
 
   <b>🛠 Guild management:</b> <i>[Squad Leader only]</i>
 
-  /squad_guild_add &lt;guild leader id/@username&gt; - Add a guild to the squad. Use in reply to the <code>👥 Guild</code> message forward.
+  /squad_guild_add - Add a guild to the squad. Use in reply to the <code>👥 Guild</code> message forward <b>sent by the guild leader</b>.
   /squad_guild_remove [id/tag] - Remove a guild from the squad. Use in reply to the <code>👥 Guild</code> message forward or specify the guild.
 
   <b>🤓 Player management:</b> <i>[Guild Leader only]</i>
   To add/remove members to the guild the guild leader should forward <code>/g_idlist</code> command result.
   This will update guild player list with the current members that are registered in this squad.
 
+guild_already_in_guild: |
+  <b>⚠️ Already in guild</b>
+
+  Player is already in a guild.
+
 guild_add_not_reply: |
   <b>⚠️ Not a reply</b>
 
-  Please, use this command in reply to the <code>👥 Guild</code> message forward.
-guild_add_wrong_format: |
-  <b>⚠️ Wrong format</b>
+  Please, use this command in reply to the <code>👥 Guild</code> message forward <b>sent by the guild leader</b>.
+guild_add_already_exists: |
+  <b>⚠️ Guild already exists</b>
 
-  Please, use the following format:
-  /squad_guild_add &lt;guild leader id/@username&gt;
+  Guild {{ .Name }} already exists in the squad.
 
 # Finance
 finance_squad: |
