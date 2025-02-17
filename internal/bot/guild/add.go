@@ -11,8 +11,8 @@ import (
 	"gopkg.in/telebot.v3"
 )
 
-var guildRegex = regexp.MustCompile("[🇮🇲🇻🇦🇪🇺🇲🇴]+(?:\\[(.+)\\] )?([\\w ]*)\n.*: (.+)\n🏅Level: (\\d+)")
-var guildAddRegex = regexp.MustCompile("/squad_guild_add (.*)")
+var guildRegex = regexp.MustCompile(`[🇮🇲🇻🇦🇪🇺🇲🇴]+(?:\[(.+)\] )?([\w ]*)\n.*: (.+)\n🏅Level: (\d+)`)
+var guildAddRegex = regexp.MustCompile(`/squad_guild_add (.*)`)
 
 func (m *Module) GuildAdd(c telebot.Context) error {
 	scope := c.Get("scope").(permissions.Scope)
