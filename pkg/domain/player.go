@@ -73,7 +73,7 @@ func (p Player) Updated() bool {
 }
 
 // Constants
-var UsernameRegex = regexp.MustCompile("^\\w{4,32}$")
+var UsernameRegex = regexp.MustCompile(`^\w{4,32}$`)
 var ProfileUpdateInterval = 48 * time.Hour
 
 const DefaultLocale = "ru"

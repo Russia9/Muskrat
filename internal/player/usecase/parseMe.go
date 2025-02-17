@@ -11,9 +11,9 @@ import (
 	"github.com/pkg/errors"
 )
 
-var mePlayerNameRegex = regexp.MustCompile("([🇮🇲🇻🇦🇪🇺🇲🇴]+)(?:\\[\\w{2,3}\\])?([a-zA-Z0-9 _]{4,16}) explorer") // PlayerName & Castle
+var mePlayerNameRegex = regexp.MustCompile(`([🇮🇲🇻🇦🇪🇺🇲🇴]+)(?:\[\w{2,3}\])?([a-zA-Z0-9 _]{4,16}) explorer`) // PlayerName & Castle
 
-var balanceRegex = regexp.MustCompile("🪙(\\d+)(?: 💰(\\d+))?")
+var balanceRegex = regexp.MustCompile(`🪙(\d+)(?: 💰(\d+))?`)
 
 // ParseMe parses the Me message and updates the player's info
 func (u *uc) ParseMe(ctx context.Context, scope permissions.Scope, me string) (*domain.Player, error) {

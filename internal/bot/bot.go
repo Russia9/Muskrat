@@ -51,6 +51,6 @@ func (b *Bot) StartAsync() {
 }
 
 func (b *Bot) StartBlocking() {
-	b.tb.RemoveWebhook(true)
+	_ = b.tb.RemoveWebhook(true)
 	b.tb.Start()
 }

@@ -84,12 +84,12 @@ func (m *Module) Finance(c telebot.Context) error {
 		t.TotalBalance += p.PlayerBalance + p.BankBalance
 		if p.BalanceUpdatedAt.After(time.Now().Add(-time.Hour * 24)) {
 			t.CurrentBalance += p.PlayerBalance + p.BankBalance
-			t.Players[i].Time = utils.FormatDuration(time.Now().Sub(p.BalanceUpdatedAt))
+			t.Players[i].Time = utils.FormatDuration(time.Since(p.BalanceUpdatedAt))
 		} else {
 			if p.BalanceUpdatedAt.IsZero() {
 				t.Players[i].Time = "❗️N/A"
 			} else {
-				t.Players[i].Time = "❗️" + utils.FormatDuration(time.Now().Sub(p.BalanceUpdatedAt))
+				t.Players[i].Time = "❗️" + utils.FormatDuration(time.Since(p.BalanceUpdatedAt))
 			}
 		}
 	}

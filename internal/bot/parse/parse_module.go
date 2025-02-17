@@ -24,9 +24,9 @@ func NewModule(tb *telebot.Bot, l *layout.Layout, player domain.PlayerUsecase) *
 	return &Module{player, tb, l}
 }
 
-var meRegex = regexp.MustCompile("^Region Battle in [\\w\\W]*")
-var heroRegex = regexp.MustCompile("[\\w\\W]*⚙️Settings /settings[\\w\\W]*")
-var schoolRegex = regexp.MustCompile("^📚School Management[\\w\\W]*")
+var meRegex = regexp.MustCompile(`^Region Battle in [\w\W]*`)
+var heroRegex = regexp.MustCompile(`[\w\W]*⚙️Settings /settings[\w\W]*`)
+var schoolRegex = regexp.MustCompile(`^📚School Management[\w\W]*`)
 
 var ErrNotForwarded = errors.New("not forwarded")
 
@@ -41,7 +41,7 @@ func (m *Module) Router(c telebot.Context) error {
 
 	// Check message time
 	ogTime := time.Unix(int64(c.Message().OriginalUnixtime), 0)
-	if time.Now().Sub(ogTime) > TimeTreshold { // If message is older than TimeTreshold
+	if time.Since(ogTime) > TimeTreshold { // If message is older than TimeTreshold
 		if c.Chat().Type == telebot.ChatPrivate {
 			return c.Reply(m.l.Text(c, "parse_too_old"))
 		}
@@ -88,7 +88,7 @@ func (m *Module) react(c telebot.Context) error {
 	}
 
 	// Try to set the reaction for message
-	c.Bot().React(c.Chat(), c.Message(), telebot.ReactionOptions{
+	_ = c.Bot().React(c.Chat(), c.Message(), telebot.ReactionOptions{
 		Reactions: []telebot.Reaction{
 			{
 				Type:  "emoji",

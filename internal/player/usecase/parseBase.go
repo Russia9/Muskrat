@@ -8,9 +8,9 @@ import (
 	"github.com/Russia9/Muskrat/pkg/domain"
 )
 
-var levelRegex = regexp.MustCompile("🏅Level: (\\d+)")
-var expRegex = regexp.MustCompile("📖Exp: (\\d+)/(\\d+)")
-var rankRegex = regexp.MustCompile("⚔️Rank: (\\d+)")
+var levelRegex = regexp.MustCompile(`🏅Level: (\\d+)`)
+var expRegex = regexp.MustCompile(`📖Exp: (\\d+)/(\\d+)`)
+var rankRegex = regexp.MustCompile(`⚔️Rank: (\\d+)`)
 
 // ParseBase parses the basic info of a player:
 // - Level
@@ -50,6 +50,9 @@ func ParseBase(player *domain.Player, msg string) error {
 		return domain.ErrInvalidText
 	}
 	player.Rank, err = strconv.Atoi(rank[1])
+	if err != nil {
+		return domain.ErrInvalidText
+	}
 
 	// Update time
 	player.BasicsUpdatedAt = time.Now()
