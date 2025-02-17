@@ -105,21 +105,99 @@ func (u *uc) Get(ctx context.Context, scope permissions.Scope, id string) (*doma
 }
 
 func (u *uc) GetByLeader(ctx context.Context, scope permissions.Scope, leaderID int64) (*domain.Guild, error) {
-	panic("unimplemented")
+	// Permission check
+	if scope.PlayerRole < permissions.PlayerRoleUser {
+		return nil, permissions.ErrForbidden
+	}
+
+	// Get guild
+	g, err := u.repo.GetByLeader(ctx, leaderID)
+	if err != nil {
+		return nil, errors.Wrap(err, "guild repo")
+	}
+
+	// Permission check
+	if scope.SquadRole < permissions.SquadRoleMember || (scope.SquadID != nil && g.SquadID != *scope.SquadID) {
+		return nil, permissions.ErrForbidden
+	}
+
+	return g, nil
 }
 
 func (u *uc) GetBySquadAndName(ctx context.Context, scope permissions.Scope, squadID string, name string) (*domain.Guild, error) {
-	panic("unimplemented")
+	// Permission check
+	if scope.PlayerRole < permissions.PlayerRoleUser {
+		return nil, permissions.ErrForbidden
+	}
+
+	// Get guild
+	g, err := u.repo.GetBySquadAndName(ctx, squadID, name)
+	if err != nil {
+		return nil, errors.Wrap(err, "guild repo")
+	}
+
+	// Permission check
+	if scope.SquadRole < permissions.SquadRoleMember || (scope.SquadID != nil && g.SquadID != *scope.SquadID) {
+		return nil, permissions.ErrForbidden
+	}
+
+	return g, nil
 }
 
 func (u *uc) GetByTag(ctx context.Context, scope permissions.Scope, tag string) (*domain.Guild, error) {
-	panic("unimplemented")
+	// Permission check
+	if scope.PlayerRole < permissions.PlayerRoleUser {
+		return nil, permissions.ErrForbidden
+	}
+
+	// Get guild
+	g, err := u.repo.GetByTag(ctx, tag)
+	if err != nil {
+		return nil, errors.Wrap(err, "guild repo")
+	}
+
+	// Permission check
+	if scope.SquadRole < permissions.SquadRoleMember || (scope.SquadID != nil && g.SquadID != *scope.SquadID) {
+		return nil, permissions.ErrForbidden
+	}
+
+	return g, nil
 }
 
 func (u *uc) ListBySquad(ctx context.Context, scope permissions.Scope, squadID string) ([]*domain.Guild, error) {
-	panic("unimplemented")
+	// Permission check
+	if scope.PlayerRole < permissions.PlayerRoleUser {
+		return nil, permissions.ErrForbidden
+	}
+	if scope.SquadRole < permissions.SquadRoleMember || (scope.SquadID != nil && squadID != *scope.SquadID) {
+		return nil, permissions.ErrForbidden
+	}
+
+	// List guilds
+	gs, err := u.repo.ListBySquad(ctx, squadID)
+	if err != nil {
+		return nil, errors.Wrap(err, "guild repo")
+	}
+
+	return gs, nil
 }
 
 func (u *uc) Update(ctx context.Context, scope permissions.Scope, name string, tag string, level int) (*domain.Guild, error) {
-	panic("unimplemented")
+	// Permission check
+	if scope.PlayerRole < permissions.PlayerRoleUser {
+		return nil, permissions.ErrForbidden
+	}
+
+	// Get Guild
+	g, err := u.repo.Get(ctx, *scope.GuildID)
+	if err != nil {
+		return nil, errors.Wrap(err, "guild repo")
+	}
+
+	// Permission check
+	if scope.GuildRole < permissions.SquadRoleLeader || (scope.GuildID != nil && g.ID != *scope.GuildID) {
+		return nil, permissions.ErrForbidden
+	}
+
+	return g, nil
 }
