@@ -12,7 +12,7 @@ import (
 	"gopkg.in/telebot.v3"
 )
 
-var guildRegex = regexp.MustCompile(`[🇮🇲🇻🇦🇪🇺🇲🇴]+(?:\[(.+)\] )?([\w ]*)\n.*: (.+)\n🏅Level: (\d+)`)
+var guildRegex = regexp.MustCompile(`[🇮🇲🇻🇦🇪🇺🇲🇴]+(?:\[(.+)\] )?([\w ]*)(?:\n📍Guild HQ: .*\[(.*)\])?[\w\W]+🏅Level: (\d+)`)
 
 func (m *Module) GuildAdd(c telebot.Context) error {
 	scope := c.Get("scope").(permissions.Scope)
@@ -23,12 +23,12 @@ func (m *Module) GuildAdd(c telebot.Context) error {
 	}
 
 	// Check if message is a reply
-	if c.Message().ReplyTo == nil || c.Message().ReplyTo.Sender == nil {
+	if c.Message().ReplyTo == nil || c.Message().ReplyTo.Sender == nil || c.Message().ReplyTo.OriginalSender == nil {
 		return c.Send(m.l.Text(c, "squad_add_not_reply"))
 	}
 
 	// Check reply message format
-	if !guildRegex.MatchString(c.Message().ReplyTo.Text) || c.Message().ReplyTo.Sender.ID != utils.ChatWarsBot {
+	if !guildRegex.MatchString(c.Message().ReplyTo.Text) || c.Message().ReplyTo.OriginalSender.ID != utils.ChatWarsBot {
 		return c.Send(m.l.Text(c, "guild_add_not_reply"))
 	}
 
@@ -47,10 +47,14 @@ func (m *Module) GuildAdd(c telebot.Context) error {
 	match := guildRegex.FindStringSubmatch(c.Message().ReplyTo.Text)
 	name := match[2]
 	tag := match[1]
-	level, _ := strconv.Atoi(match[3])
+	var hq string
+	if match[3] != "" {
+		hq = utils.CoordsToGoto(match[3])
+	}
+	level, _ := strconv.Atoi(match[4])
 
 	// Create Guild
-	g, err := m.guild.Create(context.Background(), scope, c.Message().ReplyTo.Sender.ID, name, tag, level)
+	g, err := m.guild.Create(context.Background(), scope, c.Message().ReplyTo.Sender.ID, name, tag, hq, level)
 	if errors.Is(err, domain.ErrAlreadyInGuild) {
 		return c.Send(m.l.Text(c, "guild_already_in_guild"))
 	} else if errors.Is(err, domain.ErrGuildAlreadyExists) {
@@ -59,7 +63,5 @@ func (m *Module) GuildAdd(c telebot.Context) error {
 		return err
 	}
 
-	// TODO: Success message
-
-	return nil
+	return c.Send(m.l.Text(c, "guild_add_success", g))
 }

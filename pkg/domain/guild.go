@@ -13,9 +13,10 @@ type Guild struct {
 	ID      string `bson:"_id"`
 	SquadID string
 
-	Name     string
-	Tag      string
-	LeaderID int64
+	HQLocation string
+	Name       string
+	Tag        string
+	LeaderID   int64
 
 	Level int
 
@@ -30,7 +31,7 @@ var ErrAlreadyInGuild = errors.New("already in guild")
 
 // Interfaces
 type GuildUsecase interface {
-	Create(ctx context.Context, scope permissions.Scope, leader int64, name, tag string, level int) (*Guild, error)
+	Create(ctx context.Context, scope permissions.Scope, leader int64, name, tag, hqLocation string, level int) (*Guild, error)
 
 	Get(ctx context.Context, scope permissions.Scope, id string) (*Guild, error)
 	GetByTag(ctx context.Context, scope permissions.Scope, tag string) (*Guild, error)
@@ -39,7 +40,7 @@ type GuildUsecase interface {
 
 	ListBySquad(ctx context.Context, scope permissions.Scope, squadID string) ([]*Guild, error)
 
-	Update(ctx context.Context, scope permissions.Scope, name, tag string, level int) (*Guild, error)
+	Update(ctx context.Context, scope permissions.Scope, name, tag, hqLocation string, level int) (*Guild, error)
 }
 
 type GuildRepository interface {

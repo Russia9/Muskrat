@@ -205,6 +205,12 @@ guild_add_already_exists: |
   <b>⚠️ Guild already exists</b>
 
   Guild {{ .Name }} already exists in the squad.
+guild_add_success: |
+  <b>✅ Guild added</b>
+
+  Guild {{ .Name }} successfully added to the squad.
+  For adding/removing members the guild leader should forward <code>/g_idlist</code> command result.
+  This will update guild player list with the current members that are registered in this squad.
 
 # Finance
 finance_squad: |

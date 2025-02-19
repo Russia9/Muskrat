@@ -21,5 +21,7 @@ func NewModule(tb *telebot.Bot, l *layout.Layout, player domain.PlayerUsecase, s
 	tb.Handle("/squad_guild_add", m.GuildAdd)
 	tb.Handle("/squad_guild_remove", m.GuildRemove)
 
+	tb.Handle("/guild_help", m.GuildHelp)
+
 	return m
 }

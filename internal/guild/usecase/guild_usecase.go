@@ -20,7 +20,7 @@ func NewGuildUsecase(repo domain.GuildRepository, player domain.PlayerRepository
 	return &uc{repo, player, squad}
 }
 
-func (u *uc) Create(ctx context.Context, scope permissions.Scope, leader int64, name, tag string, level int) (*domain.Guild, error) {
+func (u *uc) Create(ctx context.Context, scope permissions.Scope, leader int64, name, tag, hqLocation string, level int) (*domain.Guild, error) {
 	// Permission check
 	if scope.PlayerRole < permissions.PlayerRoleUser {
 		return nil, permissions.ErrForbidden
@@ -53,14 +53,15 @@ func (u *uc) Create(ctx context.Context, scope permissions.Scope, leader int64, 
 
 	// Create guild
 	g := &domain.Guild{
-		ID:        uuid.NewString(),
-		SquadID:   *scope.SquadID,
-		Name:      name,
-		Tag:       tag,
-		LeaderID:  leader,
-		Level:     level,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		ID:         uuid.NewString(),
+		SquadID:    *scope.SquadID,
+		Name:       name,
+		Tag:        tag,
+		HQLocation: hqLocation,
+		LeaderID:   leader,
+		Level:      level,
+		CreatedAt:  time.Now(),
+		UpdatedAt:  time.Now(),
 	}
 
 	// Save guild
@@ -182,7 +183,7 @@ func (u *uc) ListBySquad(ctx context.Context, scope permissions.Scope, squadID s
 	return gs, nil
 }
 
-func (u *uc) Update(ctx context.Context, scope permissions.Scope, name string, tag string, level int) (*domain.Guild, error) {
+func (u *uc) Update(ctx context.Context, scope permissions.Scope, name, tag, hqLocation string, level int) (*domain.Guild, error) {
 	// Permission check
 	if scope.PlayerRole < permissions.PlayerRoleUser {
 		return nil, permissions.ErrForbidden
@@ -197,6 +198,17 @@ func (u *uc) Update(ctx context.Context, scope permissions.Scope, name string, t
 	// Permission check
 	if scope.GuildRole < permissions.SquadRoleLeader || (scope.GuildID != nil && g.ID != *scope.GuildID) {
 		return nil, permissions.ErrForbidden
+	}
+
+	// Update guild
+	g.Name = name
+	g.Tag = tag
+	g.HQLocation = hqLocation
+	g.Level = level
+
+	err = u.repo.Update(ctx, g)
+	if err != nil {
+		return nil, errors.Wrap(err, "guild repo")
 	}
 
 	return g, nil
