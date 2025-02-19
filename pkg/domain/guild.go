@@ -41,6 +41,8 @@ type GuildUsecase interface {
 	ListBySquad(ctx context.Context, scope permissions.Scope, squadID string) ([]*Guild, error)
 
 	Update(ctx context.Context, scope permissions.Scope, name, tag, hqLocation string, level int) (*Guild, error)
+
+	ParseList(ctx context.Context, scope permissions.Scope, idlist string) (*Guild, error)
 }
 
 type GuildRepository interface {
