@@ -15,18 +15,20 @@ import (
 
 type Module struct {
 	player domain.PlayerUsecase
+	guild  domain.GuildUsecase
 
 	tb *telebot.Bot
 	l  *layout.Layout
 }
 
-func NewModule(tb *telebot.Bot, l *layout.Layout, player domain.PlayerUsecase) *Module {
-	return &Module{player, tb, l}
+func NewModule(tb *telebot.Bot, l *layout.Layout, player domain.PlayerUsecase, guild domain.GuildUsecase) *Module {
+	return &Module{player, guild, tb, l}
 }
 
 var meRegex = regexp.MustCompile(`^Region Battle in [\w\W]*`)
 var heroRegex = regexp.MustCompile(`[\w\W]*⚙️Settings /settings[\w\W]*`)
 var schoolRegex = regexp.MustCompile(`^📚School Management[\w\W]*`)
+var idlistRegex = regexp.MustCompile(`👣\d+ (\d+)`)
 
 var ErrNotForwarded = errors.New("not forwarded")
 
@@ -73,6 +75,15 @@ func (m *Module) Router(c telebot.Context) error {
 		}
 
 		return m.react(c)
+	case idlistRegex.MatchString(c.Text()):
+		if scope.GuildRole == permissions.SquadRoleLeader && scope.GuildID != nil {
+			_, err = m.guild.ParseList(context.Background(), scope, c.Text())
+			if err != nil {
+				return err
+			}
+
+			return m.react(c)
+		}
 	}
 
 	return nil

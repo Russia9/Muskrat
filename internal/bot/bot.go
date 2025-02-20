@@ -37,7 +37,7 @@ func NewBot(tb *telebot.Bot, l *layout.Layout, pl domain.PlayerUsecase, sq domai
 
 	// Create Modules
 	b.settings = settings.NewModule(tb, l, pl)
-	b.parse = parse.NewModule(tb, l, pl)
+	b.parse = parse.NewModule(tb, l, pl, g)
 	b.squad = squad.NewModule(tb, l, pl, sq)
 	b.guild = guild.NewModule(tb, l, pl, sq, g)
 

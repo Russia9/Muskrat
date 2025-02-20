@@ -62,6 +62,7 @@ func (u *uc) Create(ctx context.Context, scope permissions.Scope, leader int64, 
 
 	// Update player
 	pl.GuildID = &g.ID
+	pl.GuildRole = permissions.SquadRoleLeader
 
 	// Save player
 	err = u.player.Update(ctx, pl)
