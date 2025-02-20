@@ -33,6 +33,9 @@ var ErrAlreadyInGuild = errors.New("already in guild")
 type GuildUsecase interface {
 	Create(ctx context.Context, scope permissions.Scope, leader int64, name, tag, hqLocation string, level int) (*Guild, error)
 
+	DeleteByLeader(ctx context.Context, scope permissions.Scope, leaderID int64) error
+	DeleteByTag(ctx context.Context, scope permissions.Scope, tag string) error
+
 	Get(ctx context.Context, scope permissions.Scope, id string) (*Guild, error)
 	GetByTag(ctx context.Context, scope permissions.Scope, tag string) (*Guild, error)
 	GetByLeader(ctx context.Context, scope permissions.Scope, leaderID int64) (*Guild, error)
