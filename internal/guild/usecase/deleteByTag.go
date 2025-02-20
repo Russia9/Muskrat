@@ -11,9 +11,20 @@ func (u *uc) DeleteByTag(ctx context.Context, scope permissions.Scope, tag strin
 		return permissions.ErrForbidden
 	}
 
+	guild, err := u.repo.GetByTag(ctx, tag)
+	if err != nil {
+		return errors.Wrap(err, `guild repo`)
+	}
+
 	err = u.repo.DeleteByTag(ctx, tag)
 	if err != nil {
 		return errors.Wrap(err, `guild repo`)
 	}
+
+	err = u.player.RemoveGuild(ctx, guild.ID)
+	if err != nil {
+		return errors.Wrap(err, `player repo`)
+	}
+
 	return nil
 }

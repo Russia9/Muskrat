@@ -11,9 +11,19 @@ func (u *uc) DeleteByLeader(ctx context.Context, scope permissions.Scope, leader
 		return permissions.ErrForbidden
 	}
 
-	err := u.repo.DeleteByLeader(ctx, leaderID)
+	guild, err := u.repo.GetByLeader(ctx, leaderID)
 	if err != nil {
 		return errors.Wrap(err, `guild repo`)
+	}
+
+	err = u.repo.DeleteByLeader(ctx, leaderID)
+	if err != nil {
+		return errors.Wrap(err, `guild repo`)
+	}
+
+	err = u.player.RemoveGuild(ctx, guild.ID)
+	if err != nil {
+		return errors.Wrap(err, `player repo`)
 	}
 	return nil
 }

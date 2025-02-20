@@ -185,3 +185,8 @@ func (r *repo) Delete(ctx context.Context, id int64) error {
 
 	return nil
 }
+
+func (r *repo) RemoveGuild(ctx context.Context, guildID string) error {
+	//TODO implement me
+	panic("implement me")
+}

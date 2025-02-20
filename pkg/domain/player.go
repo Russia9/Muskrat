@@ -133,4 +133,6 @@ type PlayerRepository interface {
 	Update(ctx context.Context, obj *Player) error
 
 	Delete(ctx context.Context, id int64) error
+
+	RemoveGuild(ctx context.Context, guildID string) error
 }
