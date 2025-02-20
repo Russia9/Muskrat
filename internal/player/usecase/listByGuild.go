@@ -5,6 +5,7 @@ import (
 
 	"github.com/Russia9/Muskrat/pkg/domain"
 	"github.com/Russia9/Muskrat/pkg/permissions"
+	"github.com/pkg/errors"
 )
 
 func (u *uc) ListByGuild(ctx context.Context, scope permissions.Scope, guildID string, sort domain.PlayerSort) ([]*domain.Player, error) {
@@ -22,7 +23,7 @@ func (u *uc) ListByGuild(ctx context.Context, scope permissions.Scope, guildID s
 	// Fetch players
 	players, err := u.repo.ListByGuild(ctx, guildID, sort)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "player repo")
 	}
 
 	return players, nil

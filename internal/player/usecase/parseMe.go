@@ -44,7 +44,7 @@ func (u *uc) ParseMe(ctx context.Context, scope permissions.Scope, me string) (*
 	// Parse Basic info
 	err = ParseBase(player, me)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "parse")
 	}
 
 	// Parse Balance

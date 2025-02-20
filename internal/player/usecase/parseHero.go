@@ -54,7 +54,7 @@ func (u *uc) ParseHero(ctx context.Context, scope permissions.Scope, hero string
 	// Parse Basic info
 	err = ParseBase(player, hero)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "parse")
 	}
 
 	// Parse Basic Stats

@@ -7,6 +7,7 @@ import (
 
 	"github.com/Russia9/Muskrat/pkg/domain"
 	"github.com/Russia9/Muskrat/pkg/permissions"
+	"github.com/pkg/errors"
 )
 
 var memberRegex = regexp.MustCompile(`👣\d+ (\d+)`)
@@ -28,7 +29,7 @@ func (u *uc) ParseList(ctx context.Context, scope permissions.Scope, idlist stri
 	// Get Guild
 	g, err := u.repo.Get(ctx, *scope.GuildID)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "guild repo")
 	}
 
 	// Parse list
@@ -44,7 +45,7 @@ func (u *uc) ParseList(ctx context.Context, scope permissions.Scope, idlist stri
 	// Get current members
 	members, err := u.player.ListByGuild(ctx, g.ID, domain.PlayerSortRank)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "player repo")
 	}
 
 	// Remove players that are not in the list
@@ -66,7 +67,7 @@ func (u *uc) ParseList(ctx context.Context, scope permissions.Scope, idlist stri
 
 			err := u.player.Update(ctx, member)
 			if err != nil {
-				return nil, err
+				return nil, errors.Wrap(err, "player repo")
 			}
 		}
 	}
@@ -83,7 +84,7 @@ func (u *uc) ParseList(ctx context.Context, scope permissions.Scope, idlist stri
 
 		err = u.player.Update(ctx, player)
 		if err != nil {
-			return nil, err
+			return nil, errors.Wrap(err, "player repo")
 		}
 	}
 
