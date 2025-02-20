@@ -215,6 +215,7 @@ guild_add_success: |
 # Finance
 finance_squad: |
   <b>💰 Finance (Squad)</b>
+  Squad: <b> {{ .Name }} </b>
 
   <pre>
   {{ range .Players }}
@@ -223,3 +224,16 @@ finance_squad: |
 
   <b>Total:</b> {{ .TotalBalance }}
   <b>Current:</b> {{ .CurrentBalance }} (Last update 24h ago or less)
+finance_squad_btn: "👥 Squad"
+finance_guild: |
+  <b>💰 Finance (Guild)</b>
+  Guild: <b> {{ .Name }} </b>
+
+  <pre>
+  {{ range .Players }}
+  {{ printf $.NameFmt .Name }}|🪙{{ printf $.PlayerBalanceFmt .PlayerBalance }}|💰{{ printf $.BankBalanceFmt .BankBalance }}|{{ .Time }}{{ end }}
+  </pre>
+
+  <b>Total:</b> {{ .TotalBalance }}
+  <b>Current:</b> {{ .CurrentBalance }} (Last update 24h ago or less)
+finance_guild_btn: "👤 Guild"

@@ -42,7 +42,8 @@ type GuildUsecase interface {
 
 	Update(ctx context.Context, scope permissions.Scope, name, tag, hqLocation string, level int) (*Guild, error)
 
-	ParseList(ctx context.Context, scope permissions.Scope, idlist string) (*Guild, error)
+	ParseGuild(ctx context.Context, scope permissions.Scope, msg string) (*Guild, error)
+	ParseList(ctx context.Context, scope permissions.Scope, msg string) (*Guild, error)
 }
 
 type GuildRepository interface {

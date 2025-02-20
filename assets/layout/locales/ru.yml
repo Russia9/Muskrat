@@ -214,6 +214,7 @@ guild_add_success: |
 # Finance
 finance_squad: |
   <b>💰 Финансы (Отряд)</b>
+  Отряд: <b> {{ .Name }} </b>
 
   <pre>
   {{ range .Players }}
@@ -222,3 +223,16 @@ finance_squad: |
 
   <b>Всего:</b> {{ .TotalBalance }}
   <b>Актуально:</b> {{ .CurrentBalance }} (Обновлено менее 24 часов назад)
+finance_squad_btn: "👥 Отряд"
+finance_guild: |
+  <b>💰 Финансы (Гильдия)</b>
+  Гильдия: <b> {{ .Name }} </b>
+
+  <pre>
+  {{ range .Players }}
+  {{ printf $.NameFmt .Name }}|🪙{{ printf $.PlayerBalanceFmt .PlayerBalance }}|💰{{ printf $.BankBalanceFmt .BankBalance }}|{{ .Time }}{{ end }}
+  </pre>
+
+  <b>Всего:</b> {{ .TotalBalance }}
+  <b>Актуально:</b> {{ .CurrentBalance }} (Обновлено менее 24 часов назад)
+finance_guild_btn: "👤 Гильдия"

@@ -29,6 +29,7 @@ var meRegex = regexp.MustCompile(`^Region Battle in [\w\W]*`)
 var heroRegex = regexp.MustCompile(`[\w\W]*⚙️Settings /settings[\w\W]*`)
 var schoolRegex = regexp.MustCompile(`^📚School Management[\w\W]*`)
 var idlistRegex = regexp.MustCompile(`👣\d+ (\d+)`)
+var guildRegex = regexp.MustCompile(`[🇮🇲🇻🇦🇪🇺🇲🇴]+(?:\[(.+)\] )?([\w ]*)(?:\n📍Guild HQ: .*\[(.*)\])?[\w\W]+🏅Level: (\d+)`)
 
 var ErrNotForwarded = errors.New("not forwarded")
 
@@ -78,6 +79,15 @@ func (m *Module) Router(c telebot.Context) error {
 	case idlistRegex.MatchString(c.Text()):
 		if scope.GuildRole == permissions.SquadRoleLeader && scope.GuildID != nil {
 			_, err = m.guild.ParseList(context.Background(), scope, c.Text())
+			if err != nil {
+				return err
+			}
+
+			return m.react(c)
+		}
+	case guildRegex.MatchString(c.Text()):
+		if scope.GuildRole == permissions.SquadRoleLeader && scope.GuildID != nil {
+			_, err = m.guild.ParseGuild(context.Background(), scope, c.Text())
 			if err != nil {
 				return err
 			}
