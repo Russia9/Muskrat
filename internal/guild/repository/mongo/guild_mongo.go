@@ -2,8 +2,6 @@ package mongo
 
 import (
 	"context"
-	"github.com/Russia9/Muskrat/pkg/permissions"
-
 	"github.com/Russia9/Muskrat/pkg/domain"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
@@ -47,7 +45,7 @@ func (r *repo) DeleteByLeader(ctx context.Context, leaderID int64) error {
 	return nil
 }
 
-func (r *repo) DeleteByTag(ctx context.Context, scope permissions.Scope, tag string) error {
+func (r *repo) DeleteByTag(ctx context.Context, tag string) error {
 	_, err := r.c.DeleteOne(ctx, bson.M{"tag": tag})
 	if err != nil {
 		return errors.Wrap(err, "mongo")
