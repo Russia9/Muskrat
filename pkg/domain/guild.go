@@ -60,5 +60,5 @@ type GuildRepository interface {
 
 	Delete(ctx context.Context, id string) error
 	DeleteByLeader(ctx context.Context, leaderID int64) error
-	DeleteByTag(ctx context.Context, scope permissions.Scope, tag string) error
+	DeleteByTag(ctx context.Context, tag string) error
 }
