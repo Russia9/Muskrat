@@ -220,7 +220,7 @@ guild_add_success: |
 # Finance
 finance_squad: |
   <b>💰 Finance (Squad)</b>
-  Squad: <b> {{ .Name }} </b>
+  Squad: <b>{{ .Name }}</b>
 
   <pre>
   {{ range .Players }}
@@ -232,7 +232,7 @@ finance_squad: |
 finance_squad_btn: "👥 Squad"
 finance_guild: |
   <b>💰 Finance (Guild)</b>
-  Guild: <b> {{ .Name }} </b>
+  Guild: <b>{{ .Name }}</b>
 
   <pre>
   {{ range .Players }}

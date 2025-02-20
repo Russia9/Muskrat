@@ -54,6 +54,24 @@ func (m *Module) Finance(c telebot.Context) error {
 		}
 	}
 
+	// Get squad or guild name
+	name := ""
+	if financeType == "guild" {
+		// Get Guild
+		g, err := m.guild.Get(context.Background(), scope, *scope.GuildID)
+		if err != nil {
+			return err
+		}
+		name = g.Name
+	} else {
+		// Get Squad
+		s, err := m.squad.Get(context.Background(), scope, *scope.SquadID)
+		if err != nil {
+			return err
+		}
+		name = s.Name
+	}
+
 	// Get player list
 	var players []*domain.Player
 	var err error
@@ -68,6 +86,7 @@ func (m *Module) Finance(c telebot.Context) error {
 
 	// Generate template
 	t := template{
+		Name:    name,
 		Players: make([]playerFinance, len(players)),
 	}
 

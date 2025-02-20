@@ -219,7 +219,7 @@ guild_add_success: |
 # Finance
 finance_squad: |
   <b>💰 Финансы (Отряд)</b>
-  Отряд: <b> {{ .Name }} </b>
+  Отряд: <b>{{ .Name }}</b>
 
   <pre>
   {{ range .Players }}
@@ -231,7 +231,7 @@ finance_squad: |
 finance_squad_btn: "👥 Отряд"
 finance_guild: |
   <b>💰 Финансы (Гильдия)</b>
-  Гильдия: <b> {{ .Name }} </b>
+  Гильдия: <b>{{ .Name }}</b>
 
   <pre>
   {{ range .Players }}
