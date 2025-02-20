@@ -49,7 +49,8 @@ help: |
   /guild_help - Guild commands.
 
   <b>💰 Finance commands:</b>
-  /finance - Show squad/guild finance info.
+  /finance - Show squad finance info.
+  /finance guild - Show guild finance info.
 
 # Settings
 settings_locale_wrong_format: |
@@ -186,7 +187,7 @@ guild_help: |
   <b>🛠 Guild management:</b> <i>[Squad Leader only]</i>
 
   /squad_guild_add - Add a guild to the squad. Use in reply to the <code>👥 Guild</code> message forward <b>sent by the guild leader</b>.
-  /squad_guild_remove [id/tag] - Remove a guild from the squad. Use in reply to the <code>👥 Guild</code> message forward or specify the guild.
+  /squad_guild_remove [leader id/@username/guild tag] - Remove a guild from the squad.
 
   <b>🤓 Player management:</b> <i>[Guild Leader only]</i>
   To add/remove members to the guild the guild leader should forward <code>/g_idlist</code> command result.
@@ -196,6 +197,10 @@ guild_already_in_guild: |
   <b>⚠️ Already in guild</b>
 
   Player is already in a guild.
+guild_not_in_guild: |
+  <b>⚠️ Not in guild</b>
+
+  You are not in a guild.
 
 guild_add_not_reply: |
   <b>⚠️ Not a reply</b>

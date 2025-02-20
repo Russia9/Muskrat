@@ -41,7 +41,7 @@ func NewBot(tb *telebot.Bot, l *layout.Layout, pl domain.PlayerUsecase, sq domai
 	b.squad = squad.NewModule(tb, l, pl, sq)
 	b.guild = guild.NewModule(tb, l, pl, sq, g)
 
-	b.finance = finance.NewModule(tb, l, pl, sq)
+	b.finance = finance.NewModule(tb, l, pl, sq, g)
 
 	// Register handlers
 	b.tb.Handle(telebot.OnText, b.Router)
