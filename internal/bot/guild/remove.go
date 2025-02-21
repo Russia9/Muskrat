@@ -25,6 +25,7 @@ func (m *Module) GuildRemove(c telebot.Context) error {
 		if err != nil {
 			return err
 		}
+		return c.Send(m.l.Text(c, "guild_delete_success"))
 	} else if removeGuildByLeaderIDRegex.MatchString(c.Text()) {
 		match := removeGuildByLeaderIDRegex.FindStringSubmatch(c.Text())
 		guildLeaderID, err := strconv.Atoi(match[1])
@@ -33,8 +34,9 @@ func (m *Module) GuildRemove(c telebot.Context) error {
 		}
 		err = m.guild.DeleteByLeader(context.Background(), scope, int64(guildLeaderID), c.Chat().ID)
 		if err != nil {
-			return err
+			return c.Send(m.l.Text(c, "guild_not_in_guild"))
 		}
+		return c.Send(m.l.Text(c, "guild_delete_success"))
 	}
 
 	return nil

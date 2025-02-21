@@ -216,6 +216,8 @@ guild_add_success: |
   Guild {{ .Name }} successfully added to the squad.
   For adding/removing members the guild leader should forward <code>/g_idlist</code> command result.
   This will update guild player list with the current members that are registered in this squad.
+guild_delete_success: |
+  <b>✅ Guild deleted</b>
 
 # Finance
 finance_squad: |
