@@ -219,6 +219,12 @@ guild_add_success: |
 guild_delete_success: |
   <b>✅ Guild deleted</b>
 
+guild_delete_wrong_format: |
+  <b>⚠️ Wrong format</b>
+
+  Please, use the following format:
+  /squad_guild_remove [leader id/guild tag]
+
 # Finance
 finance_squad: |
   <b>💰 Finance (Squad)</b>

@@ -217,6 +217,11 @@ guild_add_success: |
   Это обновит список игроков гильдии текущими членами гильдии, зарегистрированными в этом отряде.
 guild_delete_success: |
   <b>✅ Гильдия удалена</b>
+guild_delete_wrong_format: |
+  <b>⚠️ Неверный формат</b>
+
+  Пожалуйста, используйте следующий формат:
+  /squad_guild_remove [leader id/guild tag]
 
 # Finance
 finance_squad: |

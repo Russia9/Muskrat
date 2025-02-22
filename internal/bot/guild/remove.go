@@ -2,6 +2,8 @@ package guild
 
 import (
 	"context"
+	"errors"
+	"github.com/Russia9/Muskrat/pkg/domain"
 	"github.com/Russia9/Muskrat/pkg/permissions"
 	"gopkg.in/telebot.v3"
 	"regexp"
@@ -23,6 +25,11 @@ func (m *Module) GuildRemove(c telebot.Context) error {
 		guildTag := match[1]
 		err := m.guild.DeleteByTag(context.Background(), scope, guildTag, c.Chat().ID)
 		if err != nil {
+			if errors.Is(err, domain.ErrSquadNotFound) {
+				return c.Send(m.l.Text(c, "not_in_chat"))
+			} else if errors.Is(err, domain.ErrGuildNotFound) {
+				return c.Send(m.l.Text(c, "guild_not_in_guild"))
+			}
 			return err
 		}
 		return c.Send(m.l.Text(c, "guild_delete_success"))
@@ -34,10 +41,15 @@ func (m *Module) GuildRemove(c telebot.Context) error {
 		}
 		err = m.guild.DeleteByLeader(context.Background(), scope, int64(guildLeaderID), c.Chat().ID)
 		if err != nil {
-			return c.Send(m.l.Text(c, "guild_not_in_guild"))
+			if errors.Is(err, domain.ErrSquadNotFound) {
+				return c.Send(m.l.Text(c, "not_in_chat"))
+			} else if errors.Is(err, domain.ErrGuildNotFound) {
+				return c.Send(m.l.Text(c, "guild_not_in_guild"))
+			}
+			return err
 		}
 		return c.Send(m.l.Text(c, "guild_delete_success"))
 	}
 
-	return nil
+	return c.Send(m.l.Text(c, "guild_delete_wrong_format"))
 }
