@@ -62,6 +62,4 @@ type GuildRepository interface {
 	Update(ctx context.Context, obj *Guild) error
 
 	Delete(ctx context.Context, id string) error
-	DeleteByLeader(ctx context.Context, leaderID int64) error
-	DeleteByTag(ctx context.Context, tag string) error
 }

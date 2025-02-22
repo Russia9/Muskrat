@@ -27,27 +27,11 @@ func (r *repo) Create(ctx context.Context, obj *domain.Guild) error {
 }
 
 func (r *repo) Delete(ctx context.Context, id string) error {
-	// Delete object
 	_, err := r.c.DeleteOne(ctx, bson.M{"_id": id})
 	if err != nil {
-		return errors.Wrap(err, "mongo")
-	}
-
-	return nil
-}
-
-func (r *repo) DeleteByLeader(ctx context.Context, leaderID int64) error {
-	_, err := r.c.DeleteOne(ctx, bson.M{"leaderid": leaderID})
-	if err != nil {
-		return errors.Wrap(err, "mongo")
-	}
-
-	return nil
-}
-
-func (r *repo) DeleteByTag(ctx context.Context, tag string) error {
-	_, err := r.c.DeleteOne(ctx, bson.M{"tag": tag})
-	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return domain.ErrGuildNotFound
+		}
 		return errors.Wrap(err, "mongo")
 	}
 
