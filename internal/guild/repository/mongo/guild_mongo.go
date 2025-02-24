@@ -61,7 +61,7 @@ func (r *repo) GetByLeader(ctx context.Context, leaderID int64) (*domain.Guild, 
 	// Find object
 	res := r.c.FindOne(ctx, bson.M{"leaderid": leaderID})
 	if errors.Is(res.Err(), mongo.ErrNoDocuments) {
-		return nil, domain.ErrSquadNotFound
+		return nil, domain.ErrGuildNotFound
 	} else if res.Err() != nil {
 		return nil, errors.Wrap(res.Err(), "mongo")
 	}
@@ -99,7 +99,7 @@ func (r *repo) GetByTag(ctx context.Context, tag string) (*domain.Guild, error) 
 	// Find object
 	res := r.c.FindOne(ctx, bson.M{"tag": tag})
 	if errors.Is(res.Err(), mongo.ErrNoDocuments) {
-		return nil, domain.ErrSquadNotFound
+		return nil, domain.ErrGuildNotFound
 	} else if res.Err() != nil {
 		return nil, errors.Wrap(res.Err(), "mongo")
 	}
