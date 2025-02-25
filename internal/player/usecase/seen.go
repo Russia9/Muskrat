@@ -28,7 +28,7 @@ func (u *uc) Seen(ctx context.Context, scope permissions.Scope, username string)
 	// Save object to repository
 	err = u.repo.Update(ctx, obj)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "user repo")
 	}
 
 	return obj, nil

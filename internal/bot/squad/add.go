@@ -14,7 +14,7 @@ func (m *Module) SquadAdd(c telebot.Context) error {
 
 	// Check if chat is supergroup
 	if c.Chat().Type != telebot.ChatSuperGroup {
-		return c.Send(m.l.Text(c, "squad_not_in_chat"))
+		return c.Send(m.l.Text(c, "not_in_chat"))
 	}
 
 	// Check if message is a reply
@@ -25,7 +25,7 @@ func (m *Module) SquadAdd(c telebot.Context) error {
 	// Get squad by chat
 	sq, err := m.squad.GetByChatID(context.Background(), scope, c.Chat().ID)
 	if errors.Is(err, domain.ErrSquadNotFound) {
-		return c.Send(m.l.Text(c, "squad_not_in_chat"))
+		return c.Send(m.l.Text(c, "not_in_chat"))
 	} else if err != nil {
 		return err
 	}

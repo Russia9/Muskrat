@@ -4,6 +4,15 @@ wrong_format: "❌ Wrong format"
 need_profile_update: "🔄 Please, update your profile"
 forbidden: "❌ Forbidden"
 
+not_in_chat: |
+  <b>⚠️ Not in chat</b>
+
+  Please, use this command in the squad chat (supergroup).
+not_chat_admin: |
+  <b>⚠️ Not a chat admin</b>
+
+  You must be an admin of the chat to use this command.
+
 error: |
   <b>🚫 An error occurred</b>
 
@@ -35,11 +44,13 @@ menu_stock: "📦 Stock"
 help: |
   <b>📚 Help</b>
 
-  <b>🛡 Squad commands:</b>
-  /squad_help - Squad commands help.
+  <b>🛡 Squad/Guild commands:</b>
+  /squad_help - Squad commands.
+  /guild_help - Guild commands.
 
   <b>💰 Finance commands:</b>
-  /finance_squad - Show squad finance info.
+  /finance - Show squad finance info.
+  /finance guild - Show guild finance info.
 
 # Settings
 settings_locale_wrong_format: |
@@ -75,23 +86,13 @@ squad_help: |
   /squad_add - Add a player to the squad. Use in reply to the player's message. Must be used in the squad chat.
   /squad_kick [id/@username] - Remove a player from the squad. Use in reply to the player's message or specify the player.
 
-  <b>🏘 Guild management:</b> <i>[Squad Leader only]</i>
-  /squad_guild_add - Add a guild to the squad. Use in reply to the <code>👥 Guild</code> message forward.
-  /squad_guild_remove [id/tag] - Remove a guild from the squad. Use in reply to the <code>👥 Guild</code> message forward or specify the guild.
-  To add members to the guild you can forward the <code>/g_idlist</code> command result.
+  <b>🏘 Guild management:</b>
+  See /guild_help for the list of available commands.
 
   <b>🚫 Danger zone:</b>
   /squad_delete - Delete the squad. <i>[Squad Leader only]</i>
   /squad_leave - Leave the squad.
 
-squad_not_in_chat: |
-  <b>⚠️ Not in chat</b>
-
-  Please, use this command in the squad chat (supergroup).
-squad_not_chat_admin: |
-  <b>⚠️ Not a chat admin</b>
-
-  You must be an admin of the chat to use this command.
 squad_chat_already_attached: |
   <b>⚠️ Chat is already attached</b>
 
@@ -179,9 +180,65 @@ squad_delete_success: |
 
   Squad has been deleted.
 
+# Guild
+guild_help: |
+  <b>👥 Guild commands</b>
+
+  <b>🛠 Guild management:</b> <i>[Squad Leader only]</i>
+
+  /squad_guild_add - Add a guild to the squad. Use in reply to the <code>👥 Guild</code> message forward <b>sent by the guild leader</b>.
+  /squad_guild_remove [leader id/@username/guild tag] - Remove a guild from the squad.
+
+  <b>🤓 Player management:</b> <i>[Guild Leader only]</i>
+  To add/remove members to the guild the guild leader should forward <code>/g_idlist</code> command result.
+  This will update guild player list with the current members that are registered in this squad.
+
+guild_already_in_guild: |
+  <b>⚠️ Already in guild</b>
+
+  Player is already in a guild.
+guild_not_in_guild: |
+  <b>⚠️ Not in guild</b>
+
+  You are not in a guild.
+guild_not_found: |
+  <b>⚠️ Guild not found</b>
+
+  Guild not found.
+
+guild_add_not_reply: |
+  <b>⚠️ Not a reply</b>
+
+  Please, use this command in reply to the <code>👥 Guild</code> message forward <b>sent by the guild leader</b>.
+guild_add_already_exists: |
+  <b>⚠️ Guild already exists</b>
+
+  Guild {{ .Name }} already exists in the squad.
+guild_add_success: |
+  <b>✅ Guild added</b>
+
+  Guild {{ .Name }} successfully added to the squad.
+  For adding/removing members the guild leader should forward <code>/g_idlist</code> command result.
+  This will update guild player list with the current members that are registered in this squad.
+
+guild_remove_wrong_format: |
+  <b>⚠️ Wrong format</b>
+
+  Please, use the following format:
+  /squad_guild_remove [leader id/guild tag]
+guild_remove_not_leader: |
+  <b>⚠️ Not a leader</b>
+
+  The player is not the leader of the guild.
+guild_remove_success: |
+  <b>🗑 Guild deleted</b>
+
+  Guild has been deleted.
+
 # Finance
 finance_squad: |
   <b>💰 Finance (Squad)</b>
+  Squad: <b>{{ .Name }}</b>
 
   <pre>
   {{ range .Players }}
@@ -190,3 +247,16 @@ finance_squad: |
 
   <b>Total:</b> {{ .TotalBalance }}
   <b>Current:</b> {{ .CurrentBalance }} (Last update 24h ago or less)
+finance_squad_btn: "👥 Squad"
+finance_guild: |
+  <b>💰 Finance (Guild)</b>
+  Guild: <b>{{ .Name }}</b>
+
+  <pre>
+  {{ range .Players }}
+  {{ printf $.NameFmt .Name }}|🪙{{ printf $.PlayerBalanceFmt .PlayerBalance }}|💰{{ printf $.BankBalanceFmt .BankBalance }}|{{ .Time }}{{ end }}
+  </pre>
+
+  <b>Total:</b> {{ .TotalBalance }}
+  <b>Current:</b> {{ .CurrentBalance }} (Last update 24h ago or less)
+finance_guild_btn: "👤 Guild"

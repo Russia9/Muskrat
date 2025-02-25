@@ -5,6 +5,7 @@ import (
 
 	"github.com/Russia9/Muskrat/pkg/domain"
 	"github.com/Russia9/Muskrat/pkg/permissions"
+	"github.com/pkg/errors"
 )
 
 func (u *uc) SquadRemove(ctx context.Context, scope permissions.Scope, id int64) (*domain.Player, error) {
@@ -25,7 +26,7 @@ func (u *uc) SquadRemove(ctx context.Context, scope permissions.Scope, id int64)
 	// Get player
 	pl, err := u.repo.Get(ctx, id)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "user repo")
 	}
 
 	// Check if player is in squad
@@ -45,7 +46,7 @@ func (u *uc) SquadRemove(ctx context.Context, scope permissions.Scope, id int64)
 	// Save player
 	err = u.repo.Update(ctx, pl)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "user repo")
 	}
 
 	return pl, nil

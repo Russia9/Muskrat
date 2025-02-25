@@ -11,7 +11,7 @@ import (
 	"gopkg.in/telebot.v3"
 )
 
-var SquadKickRegex = regexp.MustCompile("/squad_kick(?:@MuskratBot)?(?:\\s(?:@(.*)|(\\d+)))?")
+var SquadKickRegex = regexp.MustCompile(`/squad_kick(?:@MuskratBot)?(?:\s(?:@(.*)|(\d+)))?`)
 
 func (m *Module) SquadKick(c telebot.Context) error {
 	scope := c.Get("scope").(permissions.Scope)

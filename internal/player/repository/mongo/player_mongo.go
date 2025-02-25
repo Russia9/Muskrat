@@ -185,3 +185,11 @@ func (r *repo) Delete(ctx context.Context, id int64) error {
 
 	return nil
 }
+
+func (r *repo) RemoveGuild(ctx context.Context, guildID string) error {
+	_, err := r.c.UpdateMany(ctx, bson.M{"guildid": guildID}, bson.M{"$set": bson.M{"guildid": nil, "guildrole": 0}})
+	if err != nil {
+		return errors.Wrap(err, "mongo")
+	}
+	return nil
+}

@@ -3,6 +3,7 @@ package domain
 import (
 	"context"
 	"errors"
+	"time"
 
 	"github.com/Russia9/Muskrat/pkg/permissions"
 )
@@ -12,26 +13,41 @@ type Guild struct {
 	ID      string `bson:"_id"`
 	SquadID string
 
-	Name     string
-	Tag      string
-	LeaderID int64
+	HQLocation string
+	Name       string
+	Tag        string
+	LeaderID   int64
 
 	Level int
 
-	CreatedAt int64
-	UpdatedAt int64
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 // Errors
 var ErrGuildNotFound = errors.New("guild not found")
+var ErrGuildAlreadyExists = errors.New("guild already exists")
+var ErrAlreadyInGuild = errors.New("already in guild")
+var ErrNotInSquadChat = errors.New("not in squad chat")
 
 // Interfaces
 type GuildUsecase interface {
-	Create(ctx context.Context, scope permissions.Scope, name, tag, leaderPlayerName string, level int) (*Guild, error)
+	Create(ctx context.Context, scope permissions.Scope, leader int64, name, tag, hqLocation string, level int) (*Guild, error)
+
+	DeleteByLeader(ctx context.Context, scope permissions.Scope, leaderID int64, chatID int64) error
+	DeleteByTag(ctx context.Context, scope permissions.Scope, tag string, chatID int64) error
 
 	Get(ctx context.Context, scope permissions.Scope, id string) (*Guild, error)
 	GetByTag(ctx context.Context, scope permissions.Scope, tag string) (*Guild, error)
 	GetByLeader(ctx context.Context, scope permissions.Scope, leaderID int64) (*Guild, error)
+	GetBySquadAndName(ctx context.Context, scope permissions.Scope, squadID, name string) (*Guild, error)
+
+	ListBySquad(ctx context.Context, scope permissions.Scope, squadID string) ([]*Guild, error)
+
+	Update(ctx context.Context, scope permissions.Scope, name, tag, hqLocation string, level int) (*Guild, error)
+
+	ParseGuild(ctx context.Context, scope permissions.Scope, msg string) (*Guild, error)
+	ParseList(ctx context.Context, scope permissions.Scope, msg string) (*Guild, error)
 }
 
 type GuildRepository interface {
@@ -39,6 +55,8 @@ type GuildRepository interface {
 
 	Get(ctx context.Context, id string) (*Guild, error)
 	GetByTag(ctx context.Context, tag string) (*Guild, error)
+	GetByLeader(ctx context.Context, leaderID int64) (*Guild, error)
+	GetBySquadAndName(ctx context.Context, squadID, name string) (*Guild, error)
 
 	ListBySquad(ctx context.Context, squadID string) ([]*Guild, error)
 

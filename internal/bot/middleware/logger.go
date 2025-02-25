@@ -30,10 +30,10 @@ func (m *Middleware) Logger(next telebot.HandlerFunc) telebot.HandlerFunc {
 				User:  c.Sender().ID,
 				Error: err.Error(),
 			}
-			c.Send(m.layout.Text(c, "error", tmpl))
+			_ = c.Send(m.layout.Text(c, "error", tmpl))
 			devChat, err := c.Bot().ChatByID(utils.DeveloperID)
 			if err == nil {
-				c.Bot().Send(devChat, m.layout.TextLocale("en", "error_dev", tmpl))
+				_, _ = c.Bot().Send(devChat, m.layout.TextLocale("en", "error_dev", tmpl))
 			}
 		}
 

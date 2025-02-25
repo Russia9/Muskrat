@@ -11,18 +11,18 @@ import (
 	"github.com/pkg/errors"
 )
 
-var heroPlayerNameRegex = regexp.MustCompile("([🇮🇲🇻🇦🇪🇺🇲🇴]+)([a-zA-Z0-9 _]{4,16})") // PlayerName & Castle
-var basicStatsRegex = regexp.MustCompile("STR (\\d+) DEX (\\d+) VIT (\\d+)")
+var heroPlayerNameRegex = regexp.MustCompile(`([🇮🇲🇻🇦🇪🇺🇲🇴]+)([a-zA-Z0-9 _]{4,16})`) // PlayerName & Castle
+var basicStatsRegex = regexp.MustCompile(`STR (\d+) DEX (\d+) VIT (\d+)`)
 
 var detailedStatsRegex = map[string]*regexp.Regexp{
-	"attackForce":   regexp.MustCompile("🗡️Attack Force: (\\d+)"),
-	"attackSpeed":   regexp.MustCompile("🌀Attack Speed: (\\d+)"),
-	"criticalRate":  regexp.MustCompile("⚡️Critical Rate: (\\d+)"),
-	"criticalForce": regexp.MustCompile("💥Critical Force: (\\d+)"),
-	"accuracy":      regexp.MustCompile("🦅Accuracy: (\\d+)"),
-	"evasion":       regexp.MustCompile("🥋Evasion: (\\d+)"),
-	"armorScore":    regexp.MustCompile("🛡️Armor Score: (\\d+)"),
-	"moveSpeed":     regexp.MustCompile("🥾Move Speed: (\\d+)"),
+	"attackForce":   regexp.MustCompile(`🗡️Attack Force: (\d+)`),
+	"attackSpeed":   regexp.MustCompile(`🌀Attack Speed: (\d+)`),
+	"criticalRate":  regexp.MustCompile(`⚡️Critical Rate: (\d+)`),
+	"criticalForce": regexp.MustCompile(`💥Critical Force: (\d+)`),
+	"accuracy":      regexp.MustCompile(`🦅Accuracy: (\d+)`),
+	"evasion":       regexp.MustCompile(`🥋Evasion: (\d+)`),
+	"armorScore":    regexp.MustCompile(`🛡️Armor Score: (\d+)`),
+	"moveSpeed":     regexp.MustCompile(`🥾Move Speed: (\d+)`),
 }
 
 // ParseHero parses the /hero message and updates the player's info
@@ -54,7 +54,7 @@ func (u *uc) ParseHero(ctx context.Context, scope permissions.Scope, hero string
 	// Parse Basic info
 	err = ParseBase(player, hero)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "parse")
 	}
 
 	// Parse Basic Stats

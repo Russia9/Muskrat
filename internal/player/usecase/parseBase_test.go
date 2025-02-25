@@ -26,7 +26,7 @@ func TestParseBase(t *testing.T) {
 🌟Поздравляем! Новый уровень!🌟
 Нажми /level_up
 
-🇲🇴M9co PakoB explorer of Green Castle
+🇲🇴[HC]M9co PakoB explorer of Green Castle
 🏅Level: 30 6.24%
 ⚔️Rank: 1125
 🛡️Armor: 131

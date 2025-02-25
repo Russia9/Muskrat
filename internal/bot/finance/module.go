@@ -16,17 +16,19 @@ import (
 type Module struct {
 	player domain.PlayerUsecase
 	squad  domain.SquadUsecase
+	guild  domain.GuildUsecase
 
 	tb *telebot.Bot
 	l  *layout.Layout
 }
 
-func NewModule(tb *telebot.Bot, l *layout.Layout, player domain.PlayerUsecase, squad domain.SquadUsecase) *Module {
-	m := &Module{player, squad, tb, l}
+func NewModule(tb *telebot.Bot, l *layout.Layout, player domain.PlayerUsecase, squad domain.SquadUsecase, guild domain.GuildUsecase) *Module {
+	m := &Module{player, squad, guild, tb, l}
 
 	tb.Handle("💰 Finance", m.Finance)
 	tb.Handle("💰 Финансы", m.Finance)
-	tb.Handle("/finance_squad", m.Finance)
+	tb.Handle("/finance", m.Finance)
+	tb.Handle("\ffinance", m.Finance)
 
 	return m
 }
@@ -34,19 +36,57 @@ func NewModule(tb *telebot.Bot, l *layout.Layout, player domain.PlayerUsecase, s
 func (m *Module) Finance(c telebot.Context) error {
 	scope := c.Get("scope").(permissions.Scope)
 
+	// Determine finance type
+	financeType := "squad"
+	if c.Data() == "guild" {
+		financeType = "guild"
+	}
+
 	// Check if player is in squad
 	if scope.SquadRole < permissions.SquadRoleMember || scope.SquadID == nil {
 		return c.Send(m.l.Text(c, "squad_not_in_squad"))
 	}
 
+	if financeType == "guild" {
+		// Check if player is in guild
+		if scope.GuildRole < permissions.SquadRoleMember || scope.GuildID == nil {
+			return c.Send(m.l.Text(c, "guild_not_in_guild"))
+		}
+	}
+
+	// Get squad or guild name
+	name := ""
+	if financeType == "guild" {
+		// Get Guild
+		g, err := m.guild.Get(context.Background(), scope, *scope.GuildID)
+		if err != nil {
+			return err
+		}
+		name = g.Name
+	} else {
+		// Get Squad
+		s, err := m.squad.Get(context.Background(), scope, *scope.SquadID)
+		if err != nil {
+			return err
+		}
+		name = s.Name
+	}
+
 	// Get player list
-	players, err := m.player.ListBySquad(context.Background(), scope, *scope.SquadID, domain.PlayerSortBalance)
+	var players []*domain.Player
+	var err error
+	if financeType == "guild" {
+		players, err = m.player.ListByGuild(context.Background(), scope, *scope.GuildID, domain.PlayerSortBalance)
+	} else {
+		players, err = m.player.ListBySquad(context.Background(), scope, *scope.SquadID, domain.PlayerSortBalance)
+	}
 	if err != nil {
 		return err
 	}
 
 	// Generate template
 	t := template{
+		Name:    name,
 		Players: make([]playerFinance, len(players)),
 	}
 
@@ -84,12 +124,12 @@ func (m *Module) Finance(c telebot.Context) error {
 		t.TotalBalance += p.PlayerBalance + p.BankBalance
 		if p.BalanceUpdatedAt.After(time.Now().Add(-time.Hour * 24)) {
 			t.CurrentBalance += p.PlayerBalance + p.BankBalance
-			t.Players[i].Time = utils.FormatDuration(time.Now().Sub(p.BalanceUpdatedAt))
+			t.Players[i].Time = utils.FormatDuration(time.Since(p.BalanceUpdatedAt))
 		} else {
 			if p.BalanceUpdatedAt.IsZero() {
 				t.Players[i].Time = "❗️N/A"
 			} else {
-				t.Players[i].Time = "❗️" + utils.FormatDuration(time.Now().Sub(p.BalanceUpdatedAt))
+				t.Players[i].Time = "❗️" + utils.FormatDuration(time.Since(p.BalanceUpdatedAt))
 			}
 		}
 	}
@@ -99,7 +139,16 @@ func (m *Module) Finance(c telebot.Context) error {
 	t.PlayerBalanceFmt = fmt.Sprintf("%%%dd", playerBalancePads)
 	t.BankBalanceFmt = fmt.Sprintf("%%%dd", bankBalancePads)
 
-	return c.Send(m.l.Text(c, "finance_squad", t))
+	// Generate markup
+	markup := &telebot.ReplyMarkup{}
+	if c.Chat().Type == telebot.ChatPrivate && scope.GuildRole > permissions.SquadRoleNone && scope.GuildID != nil {
+		markup.Inline(markup.Row(
+			markup.Data(m.l.Text(c, "finance_squad_btn"), "finance", "squad"),
+			markup.Data(m.l.Text(c, "finance_guild_btn"), "finance", "guild"),
+		))
+	}
+
+	return c.EditOrSend(m.l.Text(c, "finance_"+financeType, t), markup)
 }
 
 type playerFinance struct {
@@ -112,6 +161,7 @@ type playerFinance struct {
 }
 
 type template struct {
+	Name    string
 	Players []playerFinance
 
 	NameFmt          string

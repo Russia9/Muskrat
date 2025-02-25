@@ -8,20 +8,20 @@ import (
 	"github.com/pkg/errors"
 )
 
-func (u *uc) ListBySquad(ctx context.Context, scope permissions.Scope, squadID string, sort domain.PlayerSort) ([]*domain.Player, error) {
+func (u *uc) ListByGuild(ctx context.Context, scope permissions.Scope, guildID string, sort domain.PlayerSort) ([]*domain.Player, error) {
 	// Permissions check
 	if scope.PlayerRole < permissions.PlayerRoleUser {
 		return nil, permissions.ErrForbidden
 	}
-	if scope.SquadRole < permissions.SquadRoleMember || scope.SquadID == nil {
+	if scope.GuildRole < permissions.SquadRoleMember || scope.GuildID == nil {
 		return nil, permissions.ErrForbidden
 	}
-	if scope.PlayerRole < permissions.PlayerRoleInternal && *scope.SquadID != squadID {
+	if scope.PlayerRole < permissions.PlayerRoleInternal && *scope.GuildID != guildID {
 		return nil, permissions.ErrForbidden
 	}
 
 	// Fetch players
-	players, err := u.repo.ListBySquad(ctx, squadID, sort)
+	players, err := u.repo.ListByGuild(ctx, guildID, sort)
 	if err != nil {
 		return nil, errors.Wrap(err, "player repo")
 	}

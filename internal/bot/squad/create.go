@@ -17,7 +17,7 @@ func (m *Module) SquadCreate(c telebot.Context) error {
 
 	// Check if chat is supergroup
 	if c.Chat().Type != telebot.ChatSuperGroup {
-		return c.Send(m.l.Text(c, "squad_not_in_chat"))
+		return c.Send(m.l.Text(c, "not_in_chat"))
 	}
 
 	// Check if caller is a chat admin
@@ -26,7 +26,7 @@ func (m *Module) SquadCreate(c telebot.Context) error {
 		return errors.Wrap(err, "telebot")
 	}
 	if cm.Role != telebot.Administrator && cm.Role != telebot.Creator {
-		return c.Send(m.l.Text(c, "squad_not_chat_admin"))
+		return c.Send(m.l.Text(c, "not_chat_admin"))
 	}
 
 	// Check if message is in correct format

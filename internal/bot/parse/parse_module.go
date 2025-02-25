@@ -15,18 +15,21 @@ import (
 
 type Module struct {
 	player domain.PlayerUsecase
+	guild  domain.GuildUsecase
 
 	tb *telebot.Bot
 	l  *layout.Layout
 }
 
-func NewModule(tb *telebot.Bot, l *layout.Layout, player domain.PlayerUsecase) *Module {
-	return &Module{player, tb, l}
+func NewModule(tb *telebot.Bot, l *layout.Layout, player domain.PlayerUsecase, guild domain.GuildUsecase) *Module {
+	return &Module{player, guild, tb, l}
 }
 
-var meRegex = regexp.MustCompile("^Region Battle in [\\w\\W]*")
-var heroRegex = regexp.MustCompile("[\\w\\W]*⚙️Settings /settings[\\w\\W]*")
-var schoolRegex = regexp.MustCompile("^📚School Management[\\w\\W]*")
+var meRegex = regexp.MustCompile(`^Region Battle in [\w\W]*`)
+var heroRegex = regexp.MustCompile(`[\w\W]*⚙️Settings /settings[\w\W]*`)
+var schoolRegex = regexp.MustCompile(`^📚School Management[\w\W]*`)
+var idlistRegex = regexp.MustCompile(`👣\d+ (\d+)`)
+var guildRegex = regexp.MustCompile(`[🇮🇲🇻🇦🇪🇺🇲🇴]+(?:\[(.+)\] )?([\w ]*)(?:\n📍Guild HQ: .*\[(.*)\])?[\w\W]+🏅Level: (\d+)`)
 
 var ErrNotForwarded = errors.New("not forwarded")
 
@@ -41,7 +44,7 @@ func (m *Module) Router(c telebot.Context) error {
 
 	// Check message time
 	ogTime := time.Unix(int64(c.Message().OriginalUnixtime), 0)
-	if time.Now().Sub(ogTime) > TimeTreshold { // If message is older than TimeTreshold
+	if time.Since(ogTime) > TimeTreshold { // If message is older than TimeTreshold
 		if c.Chat().Type == telebot.ChatPrivate {
 			return c.Reply(m.l.Text(c, "parse_too_old"))
 		}
@@ -73,6 +76,24 @@ func (m *Module) Router(c telebot.Context) error {
 		}
 
 		return m.react(c)
+	case idlistRegex.MatchString(c.Text()):
+		if scope.GuildRole == permissions.SquadRoleLeader && scope.GuildID != nil {
+			_, err = m.guild.ParseList(context.Background(), scope, c.Text())
+			if err != nil {
+				return err
+			}
+
+			return m.react(c)
+		}
+	case guildRegex.MatchString(c.Text()):
+		if scope.GuildRole == permissions.SquadRoleLeader && scope.GuildID != nil {
+			_, err = m.guild.ParseGuild(context.Background(), scope, c.Text())
+			if err != nil {
+				return err
+			}
+
+			return m.react(c)
+		}
 	}
 
 	return nil
@@ -88,7 +109,7 @@ func (m *Module) react(c telebot.Context) error {
 	}
 
 	// Try to set the reaction for message
-	c.Bot().React(c.Chat(), c.Message(), telebot.ReactionOptions{
+	_ = c.Bot().React(c.Chat(), c.Message(), telebot.ReactionOptions{
 		Reactions: []telebot.Reaction{
 			{
 				Type:  "emoji",
