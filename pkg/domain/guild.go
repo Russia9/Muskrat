@@ -28,6 +28,7 @@ type Guild struct {
 var ErrGuildNotFound = errors.New("guild not found")
 var ErrGuildAlreadyExists = errors.New("guild already exists")
 var ErrAlreadyInGuild = errors.New("already in guild")
+var ErrNotInSquadChat = errors.New("not in squad chat")
 
 // Interfaces
 type GuildUsecase interface {

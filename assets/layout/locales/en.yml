@@ -201,6 +201,10 @@ guild_not_in_guild: |
   <b>⚠️ Not in guild</b>
 
   You are not in a guild.
+guild_not_found: |
+  <b>⚠️ Guild not found</b>
+
+  Guild not found.
 
 guild_add_not_reply: |
   <b>⚠️ Not a reply</b>
@@ -216,16 +220,20 @@ guild_add_success: |
   Guild {{ .Name }} successfully added to the squad.
   For adding/removing members the guild leader should forward <code>/g_idlist</code> command result.
   This will update guild player list with the current members that are registered in this squad.
-guild_delete_success: |
-  <b>🗑 Guild deleted</b>
 
-  Guild has been deleted.
-
-guild_delete_wrong_format: |
+guild_remove_wrong_format: |
   <b>⚠️ Wrong format</b>
 
   Please, use the following format:
   /squad_guild_remove [leader id/guild tag]
+guild_remove_not_leader: |
+  <b>⚠️ Not a leader</b>
+
+  The player is not the leader of the guild.
+guild_remove_success: |
+  <b>🗑 Guild deleted</b>
+
+  Guild has been deleted.
 
 # Finance
 finance_squad: |
