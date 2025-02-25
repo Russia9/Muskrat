@@ -8,8 +8,7 @@ The release notes can be found here: [@MuskratUpdates](https://t.me/MuskratUpdat
 - [x] 🏅 Me, /hero, /school forwards parsing
 - [x] Squad functionality and player management
 - [x] Squad finance management
-- [ ] Raid boss respawn times (Planned for 0.2)
-- [x] Guild functionality (Planned for 0.2)
+- [x] Guild functionality
 - [ ] Guild and player stock parsing
 - [ ] Squad and guild roster
 - [ ] Craft calculations based on guild/player stock
